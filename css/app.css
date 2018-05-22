@@ -1,0 +1,480 @@
+html {
+   box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+   box-sizing: inherit;
+}
+
+html,
+body {
+   width:   100%;
+   height:  100%;
+   margin:  0;
+   padding: 0;
+}
+
+body {
+   background:  #fff url('../img/subtle_grunge_@2X.png'); /* Background pattern from Subtle Patterns */
+   font-family: 'Coda', cursive;
+}
+
+.container {
+   display:         flex;
+   justify-content: center;
+   align-items:     center;
+   flex-direction:  column;
+}
+
+h1, h2 {
+   font-family: Spinnaker, sans-serif;
+   font-weight: 300;
+}
+h1 {
+   font-size: 48px;
+}
+
+h2 {
+   font-size: 32px;
+}
+
+
+/*
+ * Styles for the deck of cards
+ */
+
+.deck {
+   width:           660px;
+   min-height:      680px;
+   display:         flex;
+   flex-wrap:       wrap;
+   justify-content: space-between;
+   align-items:     center;
+   margin:          0 0 3em;
+}
+
+.deck .card {
+   height:          125px;
+   width:           125px;
+   background:      #232323; /*#2e3d49;*/
+   font-size:       0;
+   color:           #fff;
+   border-radius:   8px;
+   cursor:          pointer;
+   display:         flex;
+   justify-content: center;
+   align-items:     center;
+   box-shadow:      5px 5px 20px 0 rgba(46, 61, 73, 0.5);
+
+}
+
+.deck .card.flip {
+   /** flip animation */
+   transition:      0.7s;
+   transform-style: preserve-3d;
+   transform:       rotateY(180deg);
+}
+
+.deck .card .flamer {
+   justify-content: center;
+   align-self:      center;
+   height:          70px;
+}
+
+.deck .card.open .flamer,
+.deck .card.show .flamer,
+.deck .card.match .flamer {
+   display: none;
+}
+
+.deck .card.open {
+   transform:  rotateY(0);
+   background: #4682B4;
+   cursor:     default;
+}
+
+.deck .card.show {
+   font-size: 33px;
+}
+
+.deck .card.match {
+   animation:  1s rubberBand;
+   cursor:     default;
+   background: #78A78D;
+   font-size:  33px;
+}
+
+.deck .card.mismatch {
+   background-color: #c00;
+   animation:        1s wobble;
+}
+
+/*
+ * Styles for the Score Panel
+ */
+
+.score-panel {
+   display: flex;
+   align-items: center;
+   justify-content: space-around;
+   flex-direction: row;
+   text-align: center;
+}
+
+.score-panel .stars {
+   padding: 0;
+   display: inline-block;
+   margin:  0 5px 0 0;
+}
+
+.score-panel .stars li {
+   list-style: none;
+   display:    inline-block;
+}
+
+.score-panel .restart {
+   float:  right;
+   cursor: pointer;
+}
+
+/**/
+.container {
+   max-width: 100%;
+}
+
+.container.fire {
+   padding-right: 0;
+   padding-left:  0;
+}
+
+.flamer a {
+   min-width: 0 !important;
+}
+
+.flamer h1 {
+   margin:     0 auto;
+   text-align: center;
+   margin-top: 70px;
+}
+
+.flame-wrap {
+   -webkit-transform: translateY(0%) scale(0.55);
+   -ms-transform:     translateY(0%) scale(0.55);
+   transform:         translateY(0%) scale(0.55);
+}
+
+.flame-wrap {
+   -webkit-transition: all .3s ease-in-out;
+   transition:         all .3s ease-in-out;
+}
+
+.flame-wrap {
+   margin:        0 auto;
+   width:         83px;
+   justify-items: center;
+}
+
+.flamer {
+   background: #222;
+   margin:     0 auto;
+   width:      100%;
+}
+
+.flame {
+   position:   absolute;
+   width:      110px;
+   left:       -webkit-calc(50% - 50px);
+   left:       calc(50% - 50px);
+   height:     120px;
+   margin:     0 auto;
+   background: url(../img/flameboard.png?raw=1) 0px 0px no-repeat;
+}
+
+.modal {
+   display: none;
+
+   text-align: center;
+   background-color: #fff;
+   width: 100%;
+   height: 100%;
+   margin: 0 auto;
+   padding: 10px;
+
+   font-size: 20px;
+
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+}
+
+/** Game clock **/
+
+#game-clock {
+   document.getElementsByClassName( time-remaining ).innerHTML = hours +h;
+}
+
+.time-remaining {
+   width: 70px;
+   height: 70px;
+   display: block;
+   background-color: #E06E3D;
+   margin: 0 auto;
+   padding: 10px;
+   border-radius: 50%;
+   color: #fff;
+   font-size: 22px;
+   line-height: 50px;
+   text-align: center;
+}
+
+.modal .active {
+   display: block;
+}
+
+.modal__lost-game {
+   background-color: #cc0000;
+   color: #fff;
+}
+
+@-webkit-keyframes flame-flicker {
+   /* flame pulses */
+   0% {
+      background-position: 0px 0px;
+      opacity:             .9;
+   }
+   25% {
+      background-position: 0px 0px;
+   }
+   25.1% {
+      background-position: -100px 0px;
+   }
+   50% {
+      background-position: -100px 0px;
+      opacity:             .6;
+   }
+   50.1% {
+      background-position: -200px 0px;
+   }
+   75% {
+      background-position: -200px 0px;
+   }
+   75.1% {
+      background-position: -100px 0px;
+   }
+   100% {
+      background-position: -100px 0px;
+      opacity:             .8;
+   }
+}
+
+@keyframes flame-flicker {
+   /* flame pulses */
+   0% {
+      background-position: 0px 0px;
+      opacity:             .9;
+   }
+   25% {
+      background-position: 0px 0px;
+   }
+   25.1% {
+      background-position: -100px 0px;
+   }
+   50% {
+      background-position: -100px 0px;
+      opacity:             .6;
+   }
+   50.1% {
+      background-position: -200px 0px;
+   }
+   75% {
+      background-position: -200px 0px;
+   }
+   75.1% {
+      background-position: -100px 0px;
+   }
+   100% {
+      background-position: -100px 0px;
+      opacity:             .8;
+   }
+}
+
+/* Individual Flames */
+.flame1 {
+   -webkit-animation: flame-flicker 1.3s infinite;
+   animation:         flame-flicker 1.3s infinite;
+}
+
+.flame2 {
+   -webkit-animation: flame-flicker .8s infinite;
+   animation:         flame-flicker .8s infinite;
+}
+
+.flame3 {
+   -webkit-animation: flame-flicker .9s infinite;
+   animation:         flame-flicker .9s infinite;
+}
+
+.flame4 {
+   -webkit-animation: flame-flicker 1.2s infinite;
+   animation:         flame-flicker 1.2s infinite;
+}
+
+.flame5 {
+   -webkit-animation: flame-flicker 1.1s infinite;
+   animation:         flame-flicker 1.1s infinite;
+}
+
+.container {
+   display: -webkit-box;
+   display: -ms-flexbox;
+   display: flex;
+}
+
+.flame-wrap {
+   margin:   0 auto;
+   position: relative;
+   width:    83px;
+}
+
+/*
+ * Keyframes - from animate.css
+ *-------------------------------------*/
+
+@keyframes fadeIn {
+   from {
+      opacity: 0;
+   }
+
+   to {
+      opacity: 1;
+   }
+}
+
+@keyframes riseUp {
+   from {
+      -webkit-transform: translateY(0);
+      transform:         translateY(0);
+      visibility:        visible;
+   }
+
+   100% {
+      -webkit-transform: translateY(-1750px);
+      transform:         translateY(-1750px);
+   }
+}
+
+@keyframes rubberBand {
+   from {
+      transform: scale3d(1, 1, 1);
+   }
+
+   30% {
+      transform: scale3d(1.25, 0.75, 1);
+   }
+
+   40% {
+      transform: scale3d(0.75, 1.25, 1);
+   }
+
+   50% {
+      transform: scale3d(1.15, 0.85, 1);
+   }
+
+   65% {
+      transform: scale3d(.95, 1.05, 1);
+   }
+
+   75% {
+      transform: scale3d(1.05, .95, 1);
+   }
+
+   to {
+      transform: scale3d(1, 1, 1);
+   }
+}
+
+@keyframes wobble {
+   from {
+      transform: none;
+   }
+
+   15% {
+      transform: translate3d(-25%, 0, 0) rotate3d(0, 0, 1, -5deg);
+   }
+
+   30% {
+      transform: translate3d(20%, 0, 0) rotate3d(0, 0, 1, 3deg);
+   }
+
+   45% {
+      transform: translate3d(-15%, 0, 0) rotate3d(0, 0, 1, -3deg);
+   }
+
+   60% {
+      transform: translate3d(10%, 0, 0) rotate3d(0, 0, 1, 2deg);
+   }
+
+   75% {
+      transform: translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -1deg);
+   }
+
+   to {
+      transform: none;
+   }
+}
+
+@keyframes scaleBigText {
+   from {
+      font-size: 60px;
+   }
+
+   50% {
+      font-size: 120px;
+   }
+}
+
+/*
+ * Media Queries
+ *-------------------------------------*/
+
+@media screen and (min-width: 560px) {
+   .deck {
+      max-width: 600px;
+   }
+}
+
+@media screen and (min-width: 768px) {
+   body {
+      font-size: 18px;
+   }
+
+   .screen {
+      max-width: 800px;
+   }
+
+   .game-controls .block:nth-of-type(2) p {
+      font-size: 16px;
+   }
+}
+
+@media screen and (min-width: 1280px) {
+   .screen {
+      width:     100%;
+      max-width: 1180px;
+   }
+}
+
+@media screen and (min-width: 1400px) {
+   .deck {
+      max-width: 680px;
+   }
+
+   .deck .card {
+      height: 150px;
+      width:  150px;
+   }
+}

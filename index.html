@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <title>Matching Game</title>
+   <meta name="description" content="">
+   <meta name="viewport" content="width=device-width, minimum-scale=1.0"/>
+   <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+   <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
+   <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Spinnaker">
+   <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<div class="container">
+   <header>
+      <h1>Matching Game</h1>
+   </header>
+
+   <section  class="score-panel">
+
+      <div id="updateMoves" class="moves">0 </div>&nbsp; Moves
+
+      <div id="clockdiv"  class="header__panel header__game-clock">
+         <h2>Beat the Clock</h2>
+         <div class="game-clock"><span id="timeRemainingId" class="time-remaining block seconds">120</span> secs</div>
+      </div>
+
+      <div class="header__panel">
+         <div id="updateScore" class="updateScore block">0</div>&nbsp; score
+      </div>
+   </section>
+
+   <ul class="deck">
+      <li class="card flip">
+         <i class="fa fa-diamond" data-index="1" data-class="fa-diamond"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-paper-plane-o" data-index="2" data-class="fa-paper-plane-o"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-anchor" data-index="3" data-class="fa-anchor"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-bolt" data-index="4" data-class="fa-bolt"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-cube" data-index="5" data-class="fa-cube"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-anchor" data-index="6" data-class="fa-anchor"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-leaf" data-index="7" data-class="fa-leaf"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-bicycle" data-index="8" data-class="fa-bicycle"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-diamond" data-index="9" data-class="fa-diamond"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-bomb" data-index="10" data-class="fa-bomb"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-leaf" data-index="11" data-class="fa-leaf"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-bomb" data-index="12" data-class="fa-bomb"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-bolt" data-index="13" data-class="fa-bolt"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-bicycle" data-index="14" data-class="fa-bicycle"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-paper-plane-o" data-index="15" data-class="fa-paper-plane-o"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+      <li class="card flip">
+         <i class="fa fa-cube" data-index="16" data-class="fa-cube"></i>
+         <div class="container fire">
+            <div class="flamer">
+               <a href="/">
+                  <div class="flame-wrap">
+                     <div class="flame1 flame"></div>
+                     <div class="flame2 flame"></div>
+                     <div class="flame3 flame"></div>
+                     <div class="flame4 flame"></div>
+                     <div class="flame5 flame"></div>
+                  </div>
+               </a>
+            </div>
+         </div>
+      </li>
+   </ul>
+</div>
+
+<!-- 'Game Over' Modal -->
+<section id="game-over-modal" class="modal modal__won-game">
+   <div class="modal-content">
+      <div class="loader">
+         <i class="fa fa-check" aria-hidden="true"></i>
+      </div>
+      <h2>Congratulations! You Won!</h2>
+      <div class="modal__messages">
+         <!-- messages inserted programmatically here -->
+      </div>
+
+      <button class="button play-again game-control" data-control="startNewGame">Play again!</button>
+   </div>
+
+</section>
+
+<!-- 'You lost' Modal -->
+<section id="timed-out" class="modal modal__lost-game">
+   <div class="modal__content">
+      <div class="loader">
+         <i class="fa fa-clock-o" aria-hidden="true"></i>
+      </div>
+      <h2>Oh bummer, you lost!</h2>
+      <p>Sorry, but the clock ran out before you could complete this round.</p>
+      <button class="button play-again game-control" data-control="startNewGame">Play again!</button>
+   </div>
+
+</section>
+
+<footer class="footer__panel">
+
+   <div class="">
+      <ul class="stars">
+         <li><i class="fa fa-star"></i></li>
+         <li><i class="fa fa-star"></i></li>
+         <li><i class="fa fa-star"></i></li>
+      </ul>
+   </div>
+
+   <div class="restart">
+      <i class="fa fa-repeat"></i>
+   </div>
+
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
