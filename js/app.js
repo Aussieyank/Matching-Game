@@ -332,14 +332,14 @@
 			var t = getTimeRemaining( endtime );
 
 			secondsSpan.innerHTML = (
-				'0' + t.seconds
+				'180' + t.seconds
 			).slice( - 2 );
 
 			if ( t.seconds <= 0 ) {
 				clearInterval( timeinterval );  // <<<<<------ not sure how to do this
+				return( timeinterval );
 			}
 		}
-		return( timeinterval );
 	}
 
 	/**
@@ -354,7 +354,7 @@
 	// https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/
 	function getTimeRemaining(endtime) {
 		var t = Date.parse(endtime) - Date.parse(new Date());
-		var seconds = Math.floor((t / 1000) % 60);
+		var seconds = Math.floor((t / 1000));
 		return { 'seconds': seconds };
 	}
 
