@@ -214,9 +214,9 @@
           isMatch.count = 0
         })
       })
-	    stopTimer( timeinterval )
-      //TODO
-
+	    if ( document.querySelectorAll('.match').length === 16 ) {
+		    stopTimer()
+	    }
     }
   }
 
@@ -324,22 +324,8 @@
 	 *
 	 * @return void
 	 */
-	function stopTimer( timeinterval ) {
-		var clock = document.getElementById( "clockdiv" );
-		var secondsSpan = clock.querySelector('.seconds');
-
-		function updateClock() {
-			var t = getTimeRemaining( endtime );
-
-			secondsSpan.innerHTML = (
-				'180' + t.seconds
-			).slice( - 2 );
-
-			if ( t.seconds <= 0 ) {
-				clearInterval( timeinterval );  // <<<<<------ not sure how to do this
-				return( timeinterval );
-			}
-		}
+	function stopTimer() {
+		clearInterval( timeinterval );
 	}
 
 	/**
@@ -352,10 +338,13 @@
 	 * @return void
 	 */
 	// https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/
-	function getTimeRemaining(endtime) {
-		var t = Date.parse(endtime) - Date.parse(new Date());
-		var seconds = Math.floor((t / 1000));
-		return { 'seconds': seconds };
+	function getTimeRemaining( endtime ) {
+		let t = Date.parse( endtime ) - Date.parse( new Date() )
+		let seconds = Math.floor( ( t / 1000 ) )
+		return {
+			'total':   t,
+			'seconds': seconds,
+		}
 	}
 
 	/**
@@ -368,27 +357,25 @@
 	 *
 	 * @return void
 	 */
-	function initializeClock(id, endtime) {
-		var clock = document.getElementById(id);
-		var secondsSpan = clock.querySelector('.seconds');
+
+	function initializeClock( id, endtime ) {
+		let clock = document.getElementById( id )
+		let secondsSpan = clock.querySelector( '.seconds' )
 
 		function updateClock() {
-			var t = getTimeRemaining(endtime);
+			let t = getTimeRemaining( endtime )
 
-			secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+			secondsSpan.innerHTML = (
+				'0' + t.seconds
+			).slice( - 3 )
 
-			if (t.total <= 0) {
-				clearInterval(timeinterval);
+			if ( t.total <= 0 ) {
+				clearInterval( timeinterval )
 			}
 		}
 
-		updateClock();
-
-		/**
-		 * timeinterval is a global varaialbe so that it can be passed back and forth,
-		 * yea I know its bad
-		 */
-		timeinterval = setInterval(updateClock, 1000);
+		updateClock()
+		timeinterval = setInterval( updateClock, 1000 )
 	}
 
 	//var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
