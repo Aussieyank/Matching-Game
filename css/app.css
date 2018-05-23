@@ -208,7 +208,8 @@ h2 {
 .flamer {
    background: #222;
    margin:     0 auto;
-   width:      100%;
+   width:         62px;
+   /*width:      100%;*/
 }
 
 .flame {
@@ -518,6 +519,12 @@ h2 {
       grid-row-gap:     10px;
    }
 
+   .flame-wrap {
+      -webkit-transform: translateY(0%) scale(0.55);
+      -ms-transform:     translateY(0%) scale(0.55);
+      transform:         translateY(0%) scale(0.55);
+   }
+
    .deck .card {
       max-height:      125px;
       max-width:       125px;
@@ -616,6 +623,12 @@ h2 {
       grid-row-gap:     10px;
    }
 
+   .flame-wrap {
+      -webkit-transform: translateY(0%) scale(0.55);
+      -ms-transform:     translateY(0%) scale(0.55);
+      transform:         translateY(0%) scale(0.55);
+   }
+
    .deck .card {
       max-height:      150px;
       max-width:       150px;
@@ -679,6 +692,12 @@ h2 {
       min-width:       150px;
       border-radius:   15px;
       box-shadow:      5px 5px 20px 0 rgba(46, 61, 73, 0.5);
+   }
+
+   .flame-wrap {
+      -webkit-transform: translateY(0%) scale(0.55);
+      -ms-transform:     translateY(0%) scale(0.55);
+      transform:         translateY(0%) scale(0.55);
    }
 
    .screen {
