@@ -33,11 +33,13 @@ h1, h2 {
    font-weight: 300;
 }
 h1 {
-   font-size: 48px;
+   font-size: 42px;
+   margin-bottom: 0;
 }
 
 h2 {
    font-size: 32px;
+   margin: 10px 0;
 }
 
 
@@ -46,22 +48,27 @@ h2 {
  */
 
 .deck {
-   width:           660px;
-   min-height:      680px;
-   display:         flex;
-   flex-wrap:       wrap;
-   justify-content: space-between;
-   align-items:     center;
-   margin:          0 0 3em;
+   /*width:           660px;*/
+   /*min-height:      680px;*/
+   display:          grid;
+   grid-template-columns: 1fr 1fr 1fr 1fr;
+   flex-wrap:        nowrap;
+   grid-column-gap:  5px;
+   grid-row-gap:     5px;
+   /*justify-content: space-between;*/
+   /*align-items:     center;*/
+   /*margin:          0 0 3em;*/
 }
 
 .deck .card {
-   height:          125px;
-   width:           125px;
+   max-height:      125px;
+   max-width:       125px;
+   min-height:      65px;
+   min-width:       65px;
    background:      #232323; /*#2e3d49;*/
    font-size:       0;
    color:           #fff;
-   border-radius:   8px;
+   /*border-radius:   10px;*/
    cursor:          pointer;
    display:         flex;
    justify-content: center;
@@ -123,15 +130,29 @@ h2 {
    text-align: center;
 }
 
+.footer__panel {
+   display: flex;
+   align-items: center;
+   justify-content: space-around;
+   flex-direction: row;
+   text-align: center;
+}
+
+.container ul {
+   padding: 0;
+}
+
 .score-panel .stars {
    padding: 0;
    display: inline-block;
    margin:  0 5px 0 0;
 }
 
-.score-panel .stars li {
+.footer__panel .stars li,
+.footer__panel .stars ul {
    list-style: none;
    display:    inline-block;
+   padding: 0;
 }
 
 .score-panel .restart {
@@ -213,9 +234,9 @@ h2 {
 
 /** Game clock **/
 
-#game-clock {
-   document.getElementsByClassName( time-remaining ).innerHTML = hours +h;
-}
+/*#game-clock {*/
+   /*document.getElementsByClassName( time-remaining ).innerHTML = hours +h;*/
+/*}*/
 
 .time-remaining {
    width: 70px;
