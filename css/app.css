@@ -32,14 +32,15 @@ body {
 h1, h2 {
    font-family: Spinnaker, sans-serif;
    font-weight: 300;
+   text-align: center;
 }
 h1 {
-   font-size: 42px;
+   font-size: 32px;
    margin-bottom: 0;
 }
 
 h2 {
-   font-size: 32px;
+   font-size: 24px;
    margin: 10px 0;
 }
 
@@ -50,16 +51,14 @@ h2 {
 .deck {
    display:          grid;
    grid-template-columns: 1fr 1fr 1fr 1fr;
-   flex-wrap:        nowrap;
-   grid-column-gap:  5px;
+   /*flex-wrap:        nowrap;*/
+   grid-column-gap:  5px  !important;
    grid-row-gap:     5px;
 }
 
 .deck .card {
-   max-height:      125px;
-   max-width:       125px;
-   min-height:      65px;
-   min-width:       65px;
+   width:             62px;
+   height:            62px;
    background:      #232323; /*#2e3d49;*/
    font-size:       0;
    color:           #fff;
@@ -496,10 +495,6 @@ h2 {
       box-shadow:      5px 5px 20px 0 rgba(46, 61, 73, 0.5);
    }
 
-   header,
-   .footer__panel {
-      /*max-width: 600px;*/
-   }
 }
 
 @media screen and (min-width: 768px) {
@@ -536,10 +531,8 @@ h2 {
       font-size: 16px;
    }
 
-
    header {
       justify-self: center;
-      /*width: 100%;*/
       display: inline-grid;
    }
 
@@ -554,24 +547,6 @@ h2 {
       margin: 10px 0;
    }
 
-   .deck {
-      grid-column-gap:  10px;
-      grid-row-gap:     10px;
-   }
-
-   .deck .card {
-      max-height:      125px;
-      max-width:       125px;
-      min-height:      125px;
-      min-width:       125px;
-      border-radius:   15px;
-      box-shadow:      5px 5px 20px 0 rgba(46, 61, 73, 0.5);
-   }
-
-   .screen {
-      /*width:     100%;*/
-   }
-
    section.footer__panel {
       display: inline-grid;
       width: 100%;
@@ -580,7 +555,7 @@ h2 {
    footer.footer__panel {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      width: 680px;
+      /*width: 680px;*/
       justify-content: space-between;
    }
 
@@ -662,7 +637,7 @@ h2 {
    footer.footer__panel {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      width: 680px;
+      /*width: 680px;*/
       justify-content: space-between;
    }
 
