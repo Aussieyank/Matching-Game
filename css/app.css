@@ -192,6 +192,48 @@ footer.footer__panel {
    padding-left:  0;
 }
 
+#overlay {
+   /*//background: rgba( 0, 0, 0, .8 );*/
+   height: 100%;
+   width: 100%;
+   position: absolute;
+   z-index: 1000;
+   top: 0;
+   left: 0;
+}
+
+#overlay a.lost-game.close {
+   color: #fff;
+   text-decoration: none;
+   font-size: 2rem;
+   font-family: Helvetica;
+   border: 4px #fff solid;
+   padding: 10px;
+   top: 10px;
+   right: 10px;
+   position: absolute;
+   /*//background: rgba( 255, 255, 255, .1);*/
+}
+
+#overlay a.won-game.close {
+   color: #333;
+   text-decoration: none;
+   font-size: 2rem;
+   font-family: Helvetica;
+   border: 4px #333 solid;
+   padding: 10px;
+   top: 10px;
+   right: 10px;
+   position: absolute;
+   /*//background: rgba( 255, 255, 255, .1);*/
+}
+
+#overlay img {
+   max-width: 600px;
+   margin-top: 40px;
+}
+
+
 .flamer a {
    min-width: 0 !important;
 }
@@ -236,24 +278,6 @@ footer.footer__panel {
    background: url(../img/flameboard.png?raw=1) 0px 0px no-repeat;
 }
 
-.modal {
-   display:          none;
-
-   text-align:       center;
-   background-color: #fff;
-   width:            100%;
-   height:           100%;
-   margin:           0 auto;
-   padding:          10px;
-
-   font-size:        20px;
-
-   position:         fixed;
-   top:              0;
-   left:             0;
-   right:            0;
-   bottom:           0;
-}
 
 .time-remaining {
    width:            70px;
@@ -269,14 +293,11 @@ footer.footer__panel {
    text-align:       center;
 }
 
-.modal .active {
-   display: block;
-}
+/*.modal .active {*/
+   /*display: block;*/
+/*}*/
 
-.modal__lost-game {
-   background-color: #c00;
-   color:            #fff;
-}
+
 
 @-webkit-keyframes flame-flicker {
    /* flame pulses */
@@ -377,6 +398,101 @@ footer.footer__panel {
    position: relative;
    width:    70px;
 }
+
+/*
+ * Modals
+ *-------------------------------------*/
+.none {
+   display: none;
+}
+
+.block {
+   display: block;
+}
+
+.modal__lost-game {
+   background-color: #e06e3d;
+   color:            #fff;
+
+   text-align: center;
+   width: 100%;
+   height: 100%;
+   margin: 0 auto;
+   padding: 10px;
+
+   font-size: 20px;
+
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+}
+
+.modal__won-game {
+   /*display: none;*/
+
+   text-align: center;
+   background-color: #fff;
+   width: 100%;
+   height: 100%;
+   margin: 0 auto;
+   padding: 10px;
+
+   font-size: 20px;
+
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+}
+
+.modal.active {
+   max-width: 100%;
+   display: flex;
+   -webkit-box-orient: vertical;
+   -webkit-box-direction: normal;
+   flex-direction: column;
+
+   -webkit-box-pack: center;
+   justify-content: center;
+
+   animation: 1s fadeIn;
+}
+
+.modal .loader {
+   font-size: 60px;
+   font-weight: 100;
+   color: #7CA4D0;
+
+   animation: 1s scaleBigText 1s;
+}
+
+.modal__lost-game .loader {
+   color: #fff;
+
+}
+
+.modal .button {
+   color: #333;
+   background-color: #fff;
+   box-shadow:    5px 5px 20px 0 rgba(46, 61, 73, 0.5);
+
+   cursor: pointer;
+   font-size: 18px;
+   font-weight: 400;
+   letter-spacing: 1px;
+   padding: 16px 24px;
+   width: auto;
+   border-radius: 5px;
+}
+
+.modal .button:hover {
+   background-color: #fff;
+   color: #333;
+}
+
 
 /*
  * Keyframes - from animate.css

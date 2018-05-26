@@ -295,7 +295,7 @@
    </section>
 
    <!-- 'Game Over' Modal -->
-   <section id="game-over-modal" class="modal modal__won-game">
+   <section id="won-game" class="modal none modal__won-game">
       <div class="modal-content">
          <div class="loader">
             <i class="fa fa-check" aria-hidden="true"></i>
@@ -305,20 +305,27 @@
             <!-- messages inserted programmatically here -->
          </div>
 
-         <button class="button play-again game-control" data-control="startNewGame">Play again!</button>
+         <button id='won-game-play-again'
+                 class="button play-again
+                 game-control" data-control="startNewGame">Play again!
+         </button>
+
       </div>
 
    </section>
 
    <!-- 'You lost' Modal -->
-   <section id="timed-out" class="modal modal__lost-game">
-      <div class="modal__content">
+   <section id="lost-game" class="modal none modal__lost-game">
+      <div class="modal-content">
          <div class="loader">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
          </div>
          <h2>Oh bummer, you lost!</h2>
          <p>Sorry, but the clock ran out before you could complete this round.</p>
-         <button class="button play-again game-control" data-control="startNewGame">Play again!</button>
+         <button id='lost-game-play-again'
+                 class="button play-again game-control"
+                 data-control="startNewGame">Play again!
+         </button>
       </div>
 
    </section>
@@ -343,6 +350,8 @@
          </div>
       </footer>
    </section>
+
+
 </div>
 <script src="js/app.js"></script>
 </body>
