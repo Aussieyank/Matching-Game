@@ -1,33 +1,24 @@
 // Wrapped it into an IIFE to protect namespacing.
+//noinspection JSAnnotator,JSAnnotator
 (
 	function ( document ) {
 		'use strict'
 
-		let messageHTML = '<p class="modal__results">You did it in %seconds% seconds and %moves% moves.  You earned %stars% and %score% points.</p>'
-
 		let body = document.querySelector( 'body' ),
 
-			lostPlayAgain = document.getElementById( 'lost-game' ),
-			lostButton = lostPlayAgain.getElementsByTagName("button")[0],
+			wonClasses  = document.getElementById( 'won-game'  ).classList,
+			lostClasses = document.getElementById( 'lost-game' ).classList,
 
-			wonPlayAgain = document.getElementById( 'won-game' ),
-			wonButton = wonPlayAgain.getElementsByTagName( 'button' )[ 0 ],
+			lostButton  = document.getElementById( 'button__lost-game' ),
+			wonButton   = document.getElementById( 'button__won-game'  ),
 
-			modalDemo = document.getElementById( 'overlay' ),
-			modalLinks = document.querySelectorAll( 'modal-content' ),
-			wapuuLink = modalLinks[ 0 ],
-			overlay = document.createElement( 'div' ),
-			overlayCloseLink = document.createElement( 'a' ),
-			overlayCloseText = document.createTextNode( 'X' ),
-			displayOverlay,
-			openModal,
-			openWonGameModal,
-			openLostGameModal,
-			callModal,
-			closeModal,
-			endtime,
-			modalClasses,
-			addImageToOverLay
+			restartIcon = document.getElementById( 'restart-icon' ),
+
+			arr = buildCards(),
+			matchTwoCards = [],
+			isMatch = {},
+			counter = {},
+			timeinterval
 
 		/**
 		 * @description Initialize the cards by looking up the `.card` nodes in the DOM,
@@ -37,16 +28,9 @@
 		function buildCards() {
 			// Array of game Card objects
 			let cardz = document.querySelectorAll( '.card' )
-			return (
-				Array.from( cardz )
-			)
-		}
 
-		let arr = buildCards()
-		let matchTwoCards = []
-		let isMatch = {}
-		let counter = {}
-		let timeinterval
+			return ( Array.from( cardz ) )
+		}
 
 		/**
 		 * Display the cards on the page
@@ -152,7 +136,7 @@
 				cardz[ index ].classList.remove( 'flip' )
 				cardz[ index ].classList.add( 'open' )
 				cardz[ index ].classList.add( 'show' )
-				updateMoves2()
+				updateMoves()
 
 				// now is the moment we have been waiting for, do they match
 				getMatch( index )
@@ -189,7 +173,7 @@
 					window.setTimeout( () => {
 						cardz[ matchTwoCards[ 0 ] ].classList.add( 'mismatch' )
 						cardz[ matchTwoCards[ 1 ] ].classList.add( 'mismatch' )
-					}, 500 )
+					}, 350 )
 				} )
 				releaseCards()
 			}
@@ -204,8 +188,7 @@
 			for ( let k = 0; k < 2; k ++ ) {
 				cardz[ matchTwoCards[ k ] ].classList.remove( 'open' )
 				cardz[ matchTwoCards[ k ] ].classList.remove( 'show' )
-				//alert('matchTwoCards[k]: ' + matchTwoCards[k])
-				cardz[ matchTwoCards[ k ] ].classList.add( 'match' )
+				cardz[ matchTwoCards[ k ] ].classList.add(    'match' )
 				updateScore()
 
 				sleep( 5 ).then( () => {
@@ -218,7 +201,9 @@
 				} )
 				if ( document.querySelectorAll( '.match' ).length === 16 ) {
 					stopTimer()
-					displayOverlay( 'won-game' )
+					clearInterval( timeinterval )
+					wonClasses.remove( 'none' )
+					wonClasses.add( 'active' )
 				}
 			}
 		}
@@ -243,7 +228,7 @@
 			for ( let k = 0; k < 2; k ++ ) {
 
 				// Usage!
-				sleep( 1500 ).then( () => {
+				sleep( 1000 ).then( () => {
 
 					for ( let k = 0; k < 2; k ++ ) {
 						cardz[ matchTwoCards[ k ] ].classList.remove( 'open' )
@@ -252,9 +237,9 @@
 					}
 					// Do something after the sleep!
 					let trash = matchTwoCards.pop()
-					trash = matchTwoCards.pop()
+					    trash = matchTwoCards.pop()
 					isMatch.count = 0
-				}, 500 )
+				}, 300 )
 			}
 		}
 
@@ -263,7 +248,7 @@
 		 */
 		function plusCounter() {
 			++ counter.count
-			updateMoves2( counter.count )
+			updateMoves( counter.count )
 		}
 
 		counter.numberMoves = 0
@@ -271,7 +256,7 @@
 		/**
 		 * @description
 		 */
-		function updateMoves2() {
+		function updateMoves() {
 			plusMoves()
 			document.getElementById( 'updateMoves' ).innerHTML = counter.numberMoves
 		}
@@ -315,9 +300,7 @@
 		// https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/
 		function getTimeRemaining( endtime ) {
 			let t = Date.parse( endtime ) - Date.parse( new Date() )
-			let seconds = Math.floor( (
-				                          t / 1000
-			                          ) )
+			let seconds = Math.floor( ( t / 1000 ) )
 
 			return {
 				'total':   t,
@@ -338,98 +321,50 @@
 				let t = getTimeRemaining( endtime )
 
 				secondsSpan.innerHTML = (
-					'0' + t.seconds
-				).slice( - 3 )
+					t.seconds
+				)
 
 				if ( t.total > 0 && document.querySelectorAll( '.match' ).length === 16 ) {
 					clearInterval( timeinterval )
-					displayOverlay( 'won-game' )
+					wonClasses.remove( 'none' )
+					wonClasses.add( 'active' )
+
 				} else if ( t.total <= 0 ) {
 					clearInterval( timeinterval )
-					displayOverlay( 'lost-game' )  // <<<<<<<<<============================
+					lostClasses.remove( 'none' )
+					lostClasses.add( 'active' )
 				}
 			}
-
 			updateClock()
 			timeinterval = setInterval( updateClock, 1000 )
 		}
 
 //======================================================================
+
 		/**
+		 * @description
 		 *
-		 * @param id
 		 */
-		openWonGameModal = function openWonGameModal( e ) {
-
-			e.target.id = 'won-game'
-			displayOverlay( e )
+		function closeWonModal() {
+			wonClasses.add( 'none' );
+			document.getElementById( 'won-game' ).style.display = 'none';
+			init()
 		}
+		wonButton.addEventListener( 'click', closeWonModal, false );
 
-		openLostGameModal = function openLostGameModal( e ) {
-
-			e.target.id = 'lost-game'
-			displayOverlay( e )
+		function closeLostModal() {
+			lostClasses.add( 'none' )
+			document.getElementById( 'lost-game' ).style.display = 'none'
+			init()
 		}
+		lostButton.addEventListener( 'click', closeLostModal, false );
 
-		/**
-		 * @description
-		 */
-		displayOverlay = function displayOverlay( id ) {
-			console.log( id )
-
-			overlay.setAttribute( 'id', 'overlay' )
-			overlayCloseLink.appendChild( overlayCloseText )
-			overlayCloseLink.setAttribute( 'href', '#' )
-			overlayCloseLink.classList.add( 'close' )
-			overlayCloseLink.classList.add( id )
-
-			modalClasses = document.getElementById( id ).classList
-			modalClasses.remove( 'none' )
-
-			overlay.appendChild( overlayCloseLink )
-			body.appendChild( overlay )
-
-			overlayCloseLink.addEventListener( 'click', function () {
-				modalClasses.add( 'none' )
-				overlayCloseLink.removeChild( overlayCloseText )
-				overlayCloseLink.classList.remove( id )
-			}, false )
-
-			lostButton.addEventListener( 'click', function ( e ) {
-
-				e.preventDefault()
-				alert( 'danny' )
-				console.log( 'danny' )
-				init()
-
-			}, false )
-
-			wonButton.addEventListener( 'click', function ( e ) {
-
-				e.preventDefault()
-				alert( 'danny' )
-				init()
-
-			}, false )
-
+		function restartGame() {
+			stopTimer()
+			let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * 60 * 1000 )
+			initializeClock( 'clockdiv', deadline )
 		}
-
-		/**
-		 * @description
-		 * @param e
-		 */
-		closeModal = function closeModal( id ) {
-			overlayCloseLink.preventDefault()
-
-			overlayCloseLink.removeEventListener( 'click', closeModal, false )
-			overlay.setAttribute( 'id', 'overlay' )
-			modalClasses = document.getElementById( id ).classList
-			modalClasses.add( 'none' )
-
-			//verlayCloseLink.removeEventListener( 'click', closeModal, false )
-			//overlay.querySelector( 'img' ).remove()
-			overlay.remove()
-		}
+		restartIcon.addEventListener( 'click', restartGame, false );
 
 
 		/** ************************************************************************
@@ -437,9 +372,7 @@
 		 ** ***********************************************************************/
 
 		function init() {
-			//wapuuLink.addEventListener( 'click', callModal );
-			//var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
-			let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * 60 * 1000 )
+			let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * 40 * 1000 )
 			initializeClock( 'clockdiv', deadline )
 			registerEventListeners()
 		}
