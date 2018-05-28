@@ -15,7 +15,7 @@
 			restartIcon = document.getElementById( 'restart-icon' ),
 
 			arr = buildCards(),
-			openCards = [],
+			matchTwoCards = [],
 			isMatch = {},
 			counter = {},
 			timeinterval
@@ -61,12 +61,13 @@
 		/**
 		 * set up the event listener for a card. If a card is clicked: TODO registerEventListeners
 		 *  - display the card's symbol (put this functionality in another function that you call from this one) TODO flipCard( index );
-		 *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one) TODO addToOpenCards( index );
+		 *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one) TODO openCards( index );
 		 *  - if the list already has another card, check to see if the two cards match
 		 *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one) TODO lockCards([]);
 		 *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one) TODO releaseCards([]);
 		 *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one) TODO plusCounter();
 		 *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one) TODO callModal();
+		 *    https://www.youtube.com/watch?v=_rUH-sEs68Y
 		 */
 
 		/**
@@ -84,19 +85,7 @@
 					displayCards( k )
 				}, false )
 			}
-		}
-
-		function deregisterEventListeners() {
-			let cardz = document.getElementsByClassName( 'card' )
-
-			for ( let k = 0; k < cardz.length; k ++ ) {
-				cardz[ k ].removeEventListener( 'click', function ( event ) {
-
-					event.stopPropagation()
-					event.preventDefault()
-					displayCards( k )
-				}, false )
-			}
+			cardz = shuffle( cardz )
 		}
 
 		/**
@@ -114,7 +103,7 @@
 		function flipCard( index ) {
 			let cardz = buildCards()
 
-			addToOpenCards( index )
+			openCards( index )
 		}
 
 		/**
@@ -122,7 +111,7 @@
 		 *              another function that you call from this one)
 		 * @param index
 		 */
-		function addToOpenCards( index ) {
+		function openCards( index ) {
 			let cardz = buildCards()
 
 			// Check to see if the counter has been initialized
@@ -138,14 +127,14 @@
 			if ( isMatch.count === 1 ) {
 
 				// array of cards using fifo stack and limit total of two
-				openCards.push( index )
+				matchTwoCards.push( index )
 				cardz[ index ].classList.remove( 'flip' )
 				cardz[ index ].classList.add( 'open' )
 				cardz[ index ].classList.add( 'show' )
 
 			} else if ( isMatch.count === 2 ) {
 				// array of cards using fifo stack and limited to total of two
-				openCards.push( index )
+				matchTwoCards.push( index )
 				cardz[ index ].classList.remove( 'flip' )
 				cardz[ index ].classList.add( 'open' )
 				cardz[ index ].classList.add( 'show' )
@@ -166,31 +155,28 @@
 		function getMatch( index ) {
 			let cardz = buildCards()
 
-			let firstCard = cardz[ openCards[ 0 ] ].children[ 0 ].getAttribute(
-				'data-class' )
-			let secondCard = cardz[ openCards[ 1 ] ].children[ 0 ].getAttribute(
-				'data-class' )
+			let firstCard =
+				cardz[ matchTwoCards[ 0 ] ].children[ 0 ].getAttribute( 'data-class' )
+
+			let secondCard =
+				cardz[ matchTwoCards[ 1 ] ].children[ 0 ].getAttribute( 'data-class' )
 
 			cardz[ index ].classList.add( 'open' )
 			cardz[ index ].classList.add( 'show' )
 
 			// icons have to match and it has to be two separate cards not one
-			if ( firstCard === secondCard && openCards[ 0 ] !== openCards[ 1 ] ) {
-
+			if ( firstCard === secondCard && matchTwoCards[ 0 ] !== matchTwoCards[ 1 ] ) {
 				plusCounter()
 				// These can be locked safely, remove the open and show classes
 				lockCards()
 			} else {
 
-				sleep( 3 ).then( () => {
+				sleep( 5 ).then( () => {
 					// tell the player the cards are mismatched.
-					setTimeout( function () {
-
-						if ( 2 === isMatch.count ) {
-							cardz[ openCards[ 0 ] ].classList.add( 'mismatch' )
-							cardz[ openCards[ 1 ] ].classList.add( 'mismatch' )
-						}
-					}, 500 )
+					window.setTimeout( () => {
+						cardz[ matchTwoCards[ 0 ] ].classList.add( 'mismatch' )
+						cardz[ matchTwoCards[ 1 ] ].classList.add( 'mismatch' )
+					}, 350 )
 				} )
 				releaseCards()
 			}
@@ -203,16 +189,16 @@
 			let cardz = buildCards()
 
 			for ( let k = 0; k < 2; k ++ ) {
-				cardz[ openCards[ k ] ].classList.remove( 'open' )
-				cardz[ openCards[ k ] ].classList.remove( 'show' )
-				cardz[ openCards[ k ] ].classList.add(    'match' )
+				cardz[ matchTwoCards[ k ] ].classList.remove( 'open' )
+				cardz[ matchTwoCards[ k ] ].classList.remove( 'show' )
+				cardz[ matchTwoCards[ k ] ].classList.add(    'match' )
 				updateScore()
 
 				sleep( 5 ).then( () => {
 					// empty the array for the next match.
 					window.setTimeout( () => {
-						let trash = openCards.pop()
-						trash = openCards.pop()
+						let trash = matchTwoCards.pop()
+						trash = matchTwoCards.pop()
 						isMatch.count = 0
 					} )
 				} )
@@ -242,23 +228,16 @@
 		function releaseCards() {
 			let cardz = document.querySelectorAll( '.card' )
 
-			for ( let k = 0; k < 2; k ++ ) {
-
-				// Usage!
-				sleep( 1000 ).then( () => {
-
-					for ( let k = 0; k < 2; k ++ ) {
-						cardz[ openCards[ k ] ].classList.remove( 'open' )
-						cardz[ openCards[ k ] ].classList.remove( 'show' )
-						cardz[ openCards[ k ] ].classList.remove( 'mismatch' )
-						console.log( cardz );
-					}
+			sleep( 1000 ).then( () => {
+				for ( let k = 0; k < matchTwoCards.length; k ++ ) {
 					// Do something after the sleep!
-					let trash = openCards.pop()
-					trash = openCards.pop()
+					cardz[ matchTwoCards[ k ] ].classList.remove( 'open' )
+					cardz[ matchTwoCards[ k ] ].classList.remove( 'show' )
+					cardz[ matchTwoCards[ k ] ].classList.remove( 'mismatch' )
+					matchTwoCards.pop()
 					isMatch.count = 0
-				}, 300 )
-			}
+				}
+			}, 300 )
 		}
 
 		/**
@@ -339,8 +318,8 @@
 				let t = getTimeRemaining( endtime )
 
 				secondsSpan.innerHTML = (
-					t.seconds
-				)
+					'0' + t.seconds
+				)//.slice( - 3 )
 
 				if ( t.total > 0 && document.querySelectorAll( '.match' ).length === 16 ) {
 					clearInterval( timeinterval )
@@ -359,47 +338,28 @@
 
 //======================================================================
 
-		function restoreState() {
-			let cardz = buildCards()
-			for ( let k = 0; k < 16; k++ ) {
-				cardz[ k ].classList.remove( 'open' )
-				cardz[ k ].classList.remove( 'show' )
-				cardz[ k ].classList.remove( 'mismatch' )
-				cardz[ k ].classList.remove( 'match' )
-				cardz[ k ].classList.add( 'flip' )
-			}
-			let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * 40 * 1000 )
-			initializeClock( 'clockdiv', deadline )
-		}
-
 		/**
 		 * @description
 		 *
 		 */
 		function closeWonModal() {
-			restoreState()
 			wonClasses.add( 'none' );
-			wonClasses.add( 'active' )
 			document.getElementById( 'won-game' ).style.display = 'none';
+			init()
 		}
 		wonButton.addEventListener( 'click', closeWonModal, false );
 
 		function closeLostModal() {
-			restoreState()
 			lostClasses.add( 'none' )
-			lostClasses.add( 'active' )
 			document.getElementById( 'lost-game' ).style.display = 'none'
+			init()
 		}
 		lostButton.addEventListener( 'click', closeLostModal, false );
 
 		function restartGame() {
-			lostClasses.add( 'none' )
-			wonClasses.add( 'none' );
-			wonClasses.add( 'active' )
-			document.getElementById( 'won-game' ).style.display = 'none';
-			document.getElementById( 'lost-game' ).style.display = 'none'
-			restoreState()
-			closeWonModal()
+			stopTimer()
+			let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * 60 * 1000 )
+			initializeClock( 'clockdiv', deadline )
 		}
 		restartIcon.addEventListener( 'click', restartGame, false );
 
