@@ -7,7 +7,7 @@
 
 		let body = document.querySelector( 'body' ),
 
-			numberOfSeconds = 60,
+			numberOfSeconds = 180,
 			deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ),
 
 			wonClasses = document.getElementById( 'won-game' ).classList,
@@ -184,21 +184,23 @@
 		 * @description Function to process cards.  Came from Mike Wales youtube broadcast
 		 * @param index
 		 */
-		function addToOpenCards( index ) {
+		//function addToOpenCards( index ) {
 			cardz.forEach( function ( card ) {
 				card.addEventListener( 'click', function ( e ) {
+					//console.log( 'openCards[ index ] ' +openCards[ index ])
 
 					if ( ! card.classList.contains( 'open' ) &&
 					     ! card.classList.contains( 'show' ) &&
 					     ! card.classList.contains( 'match' ) ) {
 						openCards.push( card )
 						card.classList.add( 'open', 'show' )
-						//console.log( 'Open Cards: ', openCards.length )
+						console.log( 'Open Cards: ', cardz[ openCards[ 0 ] ] )
 
 						if ( 2 === openCards.length ) {
 							setTimeout( function () {
-								openCards.forEach( function ( card ) {
-									card.classList.remove( 'open', 'show' )
+								openCards.forEach( function ( indexcard ) {
+									cardz[ openCards[ card ] ].classList.remove( 'open' )
+									cardz[ openCards[ card ] ].classList.remove( 'show' )
 								} )
 
 								openCards = []
@@ -207,7 +209,7 @@
 					}
 				} )
 			} )
-		}
+		//}
 
 		/**
 		 * @description if the cards do match, lock the cards in the open position
@@ -498,7 +500,7 @@
 		function init() {
 			// set as a global var as it is called in numerous places
 			initializeClock( 'clockdiv', deadline )
-			registerEventListeners()
+			//registerEventListeners()
 		}
 
 		init()
