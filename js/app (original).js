@@ -426,7 +426,6 @@
 			infoClasses.remove( 'none' )
 			infoClasses.add( 'active' )
 			document.getElementById( 'info-game' ).style.display = 'none'
-			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
 
 		infoButton.addEventListener( 'click', infoModal, false )
@@ -459,23 +458,11 @@
 		/**
 		 * @description
 		 */
-		function infoModal() {
-			infoClasses.remove( 'none' )
-			infoClasses.add( 'active' )
-			document.getElementById( 'info-game' ).style.display = 'none'
-			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
-		}
-
-		infoButton.addEventListener( 'click', infoModal, false )
-
-		/**
-		 * @description
-		 */
 		function infoGame() {
 
+			document.getElementById( 'info-game' ).style.display = 'block'
 			infoClasses.remove( 'none' )
-			infoClasses.add( 'active' )
-			document.getElementById( 'info-icon' ).style.display = 'none'
+			infoClasses.remove( 'active' )
 		}
 
 		infoIcon.addEventListener( 'click', infoGame, false )

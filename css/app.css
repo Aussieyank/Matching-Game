@@ -202,6 +202,19 @@ footer.footer__panel {
    left: 0;
 }
 
+#overlay a.info-game.close {
+   color: #fff;
+   text-decoration: none;
+   font-size: 2rem;
+   font-family: Helvetica;
+   border: 4px #fff solid;
+   padding: 10px;
+   top: 10px;
+   right: 10px;
+   position: absolute;
+   /*//background: rgba( 255, 255, 255, .1);*/
+}
+
 #overlay a.lost-game.close {
    color: #fff;
    text-decoration: none;
@@ -428,6 +441,25 @@ footer.footer__panel {
    /*right: 0;*/
    /*bottom: 0;*/
 /*}*/
+.modal__info-game {
+   display: none;
+   background-color: #fff;
+
+   text-align: center;
+   width: 100%;
+   height: 100%;
+   margin: 0 auto;
+   padding: 10px;
+
+   font-size: 20px;
+
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+}
+
 
 .modal__lost-game {
    display: none;
@@ -489,6 +521,7 @@ footer.footer__panel {
    animation: 1s scaleBigText 1s;
 }
 
+.modal__info-game .loader,
 .modal__lost-game .loader {
    color: #fff;
 

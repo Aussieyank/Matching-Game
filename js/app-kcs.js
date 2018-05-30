@@ -2,49 +2,23 @@
 //noinspection JSAnnotator,JSAnnotator
 (
 	function ( document ) {
-		//'use strict'
-
+		'use strict'
 
 		let body = document.querySelector( 'body' ),
 
-			numberOfSeconds = 60,
-			deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ),
-
-			wonClasses = document.getElementById( 'won-game' ).classList,
+			wonClasses  = document.getElementById( 'won-game'  ).classList,
 			lostClasses = document.getElementById( 'lost-game' ).classList,
-			infoClasses = document.getElementById( 'info-game' ).classList,
 
-			lostButton = document.getElementById( 'button__lost-game' ),
-			wonButton = document.getElementById( 'button__won-game' ),
-			infoButton = document.getElementById( 'button__info-game' ),
+			lostButton  = document.getElementById( 'button__lost-game' ),
+			wonButton   = document.getElementById( 'button__won-game'  ),
 
-			infoIcon = document.getElementById( 'info-icon' ),
 			restartIcon = document.getElementById( 'restart-icon' ),
 
-			cardz = buildCards(),
+			arr = buildCards(),
 			openCards = [],
 			isMatch = {},
-			userStats = {},
+			counter = {},
 			timeinterval
-
-		let starsRules = [
-			// 1 star minimum
-			{
-				minMoves: 21,
-				minScore: 4800,
-			},
-			// 2 stars minimum
-			{
-				minMoves: 17,
-				minScore: 4800,
-			},
-			// 3 stars minimum
-			{
-				minMoves: 13,
-				minScore: 18000,
-			},
-		]
-
 
 		/**
 		 * @description Initialize the cards by looking up the `.card` nodes in the DOM,
@@ -52,13 +26,10 @@
 		 * @returns {any[]}
 		 */
 		function buildCards() {
-
 			// Array of game Card objects
 			let cardz = document.querySelectorAll( '.card' )
 
-			return (
-				Array.from( shuffle( cardz ) )
-			)
+			return ( Array.from( cardz ) )
 		}
 
 		/**
@@ -94,7 +65,7 @@
 		 *  - if the list already has another card, check to see if the two cards match
 		 *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one) TODO lockCards([]);
 		 *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one) TODO releaseCards([]);
-		 *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one) TODO updateCounter();
+		 *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one) TODO plusCounter();
 		 *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one) TODO callModal();
 		 */
 
@@ -107,6 +78,19 @@
 
 			for ( let k = 0; k < cardz.length; k ++ ) {
 				cardz[ k ].addEventListener( 'click', function ( event ) {
+
+					event.stopPropagation()
+					event.preventDefault()
+					displayCards( k )
+				}, false )
+			}
+		}
+
+		function deregisterEventListeners() {
+			let cardz = document.getElementsByClassName( 'card' )
+
+			for ( let k = 0; k < cardz.length; k ++ ) {
+				cardz[ k ].removeEventListener( 'click', function ( event ) {
 
 					event.stopPropagation()
 					event.preventDefault()
@@ -128,6 +112,7 @@
 		 * @param index
 		 */
 		function flipCard( index ) {
+			let cardz = buildCards()
 
 			addToOpenCards( index )
 		}
@@ -137,76 +122,40 @@
 		 *              another function that you call from this one)
 		 * @param index
 		 */
-		//function addToOpenCards( index ) {
-		//
-		//	// Check to see if the counter has been initialized
-		//	if ( typeof openCards.length === 'undefined' &&
-		//		      ! openCards[ 0 ].contains( 'open' ) &&
-		//		      ! openCards[ 0 ].contains( 'show' ) &&
-		//		      ! openCards[ 0 ].contains( 'match' ) ) {
-		//
-		//	//	// It has not... perform the initialization
-		//	//	isMatch.count = 1
-		//	//} else if ( isMatch.count === 2 ) {
-		//	//
-		//	//} else {
-		//	//	isMatch.count ++
-		//	//}
-		//	//console.log( 'openCards.length: ' + openCards.length )
-		//
-		//	if ( openCards.length === 0 ) {
-		//
-		//		// array of cards using fifo stack and limit total of two
-		//		openCards.push( index )
-		//		cardz[ index ].classList.remove( 'flip' )
-		//		cardz[ index ].classList.add( 'open' )
-		//		cardz[ index ].classList.add( 'show' )
-		//
-		//	} else if ( openCards.length === 1 ) {
-		//		// array of cards using fifo stack and limited to total of two
-		//		openCards.push( index )
-		//		cardz[ index ].classList.remove( 'flip' )
-		//		cardz[ index ].classList.add( 'open' )
-		//		cardz[ index ].classList.add( 'show' )
-		//		updateMoves()
-		//
-		//		// now is the moment we have been waiting for, do they match
-		//		getMatch( index )
-		//
-		//	} else if ( openCards.length === 2 ) {
-		//		isMatch.count = 1
-		//		console.log( 'openCards: ' + openCards )
-		//		openCards.pop()
-		//	}
-		//}
-
-		/**
-		 * @description Function to process cards.  Came from Mike Wales youtube broadcast
-		 * @param index
-		 */
 		function addToOpenCards( index ) {
-			cardz.forEach( function ( card ) {
-				card.addEventListener( 'click', function ( e ) {
+			let cardz = buildCards()
 
-					if ( ! card.classList.contains( 'open' ) &&
-					     ! card.classList.contains( 'show' ) &&
-					     ! card.classList.contains( 'match' ) ) {
-						openCards.push( card )
-						card.classList.add( 'open', 'show' )
-						//console.log( 'Open Cards: ', openCards.length )
+			// Check to see if the counter has been initialized
+			if ( typeof isMatch.count === 'undefined' ) {
 
-						if ( 2 === openCards.length ) {
-							setTimeout( function () {
-								openCards.forEach( function ( card ) {
-									card.classList.remove( 'open', 'show' )
-								} )
+				// It has not... perform the initialization
+				isMatch.count = 1
+			} else {
 
-								openCards = []
-							}, 1500 )
-						}
-					}
-				} )
-			} )
+				isMatch.count ++
+			}
+
+			if ( isMatch.count === 1 ) {
+
+				// array of cards using fifo stack and limit total of two
+				openCards.push( index )
+				cardz[ index ].classList.remove( 'flip' )
+				cardz[ index ].classList.add( 'open' )
+				cardz[ index ].classList.add( 'show' )
+
+			} else if ( isMatch.count === 2 ) {
+				// array of cards using fifo stack and limited to total of two
+				openCards.push( index )
+				cardz[ index ].classList.remove( 'flip' )
+				cardz[ index ].classList.add( 'open' )
+				cardz[ index ].classList.add( 'show' )
+				updateMoves()
+
+				// now is the moment we have been waiting for, do they match
+				getMatch( index )
+			} else {
+				isMatch.count = 0
+			}
 		}
 
 		/**
@@ -215,6 +164,7 @@
 		 * @param index
 		 */
 		function getMatch( index ) {
+			let cardz = buildCards()
 
 			let firstCard = cardz[ openCards[ 0 ] ].children[ 0 ].getAttribute(
 				'data-class' )
@@ -227,38 +177,35 @@
 			// icons have to match and it has to be two separate cards not one
 			if ( firstCard === secondCard && openCards[ 0 ] !== openCards[ 1 ] ) {
 
-				updateCounter()
+				plusCounter()
 				// These can be locked safely, remove the open and show classes
 				lockCards()
 			} else {
 
-				//sleep( 3 ).then( () => {
-				//	// tell the player the cards are mismatched.
-				//	setTimeout( function () {
-				//
-				//		if ( 2 === isMatch.count ) {
-				//			cardz[ openCards[ 0 ] ].classList.add( 'mismatch' )
-				//			cardz[ openCards[ 1 ] ].classList.add( 'mismatch' )
-				//		}
-				//	}, 500 )
-				//} )
-				//releaseCards()
+				sleep( 3 ).then( () => {
+					// tell the player the cards are mismatched.
+					setTimeout( function () {
+
+						if ( 2 === isMatch.count ) {
+							cardz[ openCards[ 0 ] ].classList.add( 'mismatch' )
+							cardz[ openCards[ 1 ] ].classList.add( 'mismatch' )
+						}
+					}, 500 )
+				} )
+				releaseCards()
 			}
-		}
-
-		function getStars() {
-
 		}
 
 		/**
 		 * @description
 		 */
 		function lockCards() {
+			let cardz = buildCards()
 
 			for ( let k = 0; k < 2; k ++ ) {
 				cardz[ openCards[ k ] ].classList.remove( 'open' )
 				cardz[ openCards[ k ] ].classList.remove( 'show' )
-				cardz[ openCards[ k ] ].classList.add( 'match' )
+				cardz[ openCards[ k ] ].classList.add(    'match' )
 				updateScore()
 
 				sleep( 5 ).then( () => {
@@ -304,7 +251,7 @@
 						cardz[ openCards[ k ] ].classList.remove( 'open' )
 						cardz[ openCards[ k ] ].classList.remove( 'show' )
 						cardz[ openCards[ k ] ].classList.remove( 'mismatch' )
-						console.log( cardz )
+						console.log( cardz );
 					}
 					// Do something after the sleep!
 					let trash = openCards.pop()
@@ -317,31 +264,44 @@
 		/**
 		 * @description
 		 */
-		function updateCounter() {
-			++ userStats.count
-			//updateMoves( userStats.count )
+		function plusCounter() {
+			++ counter.count
+			updateMoves( counter.count )
 		}
 
-		userStats.numberMoves = 0
+		counter.numberMoves = 0
 
 		/**
 		 * @description
 		 */
 		function updateMoves() {
-			++ userStats.numberMoves
-			document.getElementById( 'updateMoves' ).innerHTML = userStats.numberMoves
+			plusMoves()
+			document.getElementById( 'updateMoves' ).innerHTML = counter.numberMoves
 		}
 
-		userStats.numberScore = 0
+		/**
+		 * @description
+		 */
+		function plusMoves() {
+			++ counter.numberMoves
+		}
+
+		counter.numberScore = 0
 
 		/**
 		 * @description
 		 */
 		function updateScore() {
-			userStats.numberScore += 100
-			document.getElementById( 'updateScore' ).innerHTML = userStats.numberScore
+			plusScore()
+			document.getElementById( 'updateScore' ).innerHTML = counter.numberScore
 		}
 
+		/**
+		 * @description
+		 */
+		function plusScore() {
+			counter.numberScore += 100
+		}
 
 		/**
 		 * @description
@@ -358,9 +318,7 @@
 		// https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/
 		function getTimeRemaining( endtime ) {
 			let t = Date.parse( endtime ) - Date.parse( new Date() )
-			let seconds = Math.floor( (
-				                          t / 1000
-			                          ) )
+			let seconds = Math.floor( ( t / 1000 ) )
 
 			return {
 				'total':   t,
@@ -395,111 +353,55 @@
 					lostClasses.add( 'active' )
 				}
 			}
-
 			updateClock()
 			timeinterval = setInterval( updateClock, 1000 )
 		}
 
 //======================================================================
 
-		/**
-		 * @description
-		 * @param deadline
-		 */
-		function restoreState( deadline ) {
-			for ( let k = 0; k < 16; k ++ ) {
+		function restoreState() {
+			let cardz = buildCards()
+			for ( let k = 0; k < 16; k++ ) {
 				cardz[ k ].classList.remove( 'open' )
 				cardz[ k ].classList.remove( 'show' )
 				cardz[ k ].classList.remove( 'mismatch' )
 				cardz[ k ].classList.remove( 'match' )
 				cardz[ k ].classList.add( 'flip' )
 			}
-			//let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 )
-			stopTimer()
+			let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * 40 * 1000 )
 			initializeClock( 'clockdiv', deadline )
 		}
-
-		/**
-		 * @description
-		 */
-		function infoModal() {
-			infoClasses.remove( 'none' )
-			infoClasses.add( 'active' )
-			document.getElementById( 'info-game' ).style.display = 'none'
-			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
-		}
-
-		infoButton.addEventListener( 'click', infoModal, false )
 
 		/**
 		 * @description
 		 *
 		 */
 		function closeWonModal() {
-			wonClasses.remove( 'none' )
+			restoreState()
+			wonClasses.add( 'none' );
 			wonClasses.add( 'active' )
-			document.getElementById( 'won-game' ).style.display = 'none'
-			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
+			document.getElementById( 'won-game' ).style.display = 'none';
 		}
+		wonButton.addEventListener( 'click', closeWonModal, false );
 
-		wonButton.addEventListener( 'click', closeWonModal, false )
-
-		/**
-		 * @description
-		 */
 		function closeLostModal() {
-			lostClasses.remove( 'none' )
+			restoreState()
+			lostClasses.add( 'none' )
 			lostClasses.add( 'active' )
 			document.getElementById( 'lost-game' ).style.display = 'none'
-			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
+		lostButton.addEventListener( 'click', closeLostModal, false );
 
-		lostButton.addEventListener( 'click', closeLostModal, false )
-
-		/**
-		 * @description
-		 */
-		function infoModal() {
-			infoClasses.remove( 'none' )
-			infoClasses.add( 'active' )
-			document.getElementById( 'info-game' ).style.display = 'none'
-			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
-		}
-
-		infoButton.addEventListener( 'click', infoModal, false )
-
-		/**
-		 * @description
-		 */
-		function infoGame() {
-
-			infoClasses.remove( 'none' )
-			infoClasses.add( 'active' )
-			document.getElementById( 'info-icon' ).style.display = 'none'
-		}
-
-		infoIcon.addEventListener( 'click', infoGame, false )
-
-		/**
-		 * @description
-		 */
 		function restartGame() {
-
-			if ( document.querySelectorAll( '.match' ).length === 16 ) {
-				//document.getElementById( 'won-game' ).style.display = 'none';
-				wonClasses.remove( 'none' )
-				wonClasses.remove( 'active' )
-			} else {
-				//document.getElementById( 'lost-game' ).style.display = 'none'
-				lostClasses.remove( 'none' )
-				lostClasses.remove( 'active' )
-			}
-			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
-
-			//closeWonModal()
+			lostClasses.add( 'none' )
+			wonClasses.add( 'none' );
+			wonClasses.add( 'active' )
+			document.getElementById( 'won-game' ).style.display = 'none';
+			document.getElementById( 'lost-game' ).style.display = 'none'
+			restoreState()
+			closeWonModal()
 		}
-
-		restartIcon.addEventListener( 'click', restartGame, false )
+		restartIcon.addEventListener( 'click', restartGame, false );
 
 
 		/** ************************************************************************
@@ -507,7 +409,7 @@
 		 ** ***********************************************************************/
 
 		function init() {
-			// set as a global var as it is called in numerous places
+			let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * 40 * 1000 )
 			initializeClock( 'clockdiv', deadline )
 			registerEventListeners()
 		}
