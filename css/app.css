@@ -33,6 +33,7 @@ h1, h2 {
    font-family: Spinnaker, sans-serif;
    font-weight: 300;
    text-align:  center;
+   text-shadow: 5px 5px 20px rgba(46, 61, 73, 0.5);
 }
 
 h1 {
@@ -140,6 +141,10 @@ h2 {
    display:      grid;
    justify-self: center;
    align-items:  center;
+}
+
+#timeRemainingId {
+   box-shadow:    5px 5px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
 .container ul {
@@ -546,6 +551,20 @@ footer.footer__panel {
    color: #333;
 }
 
+#info-span,
+#restart-span {
+   width: 54px;
+   height: 54px;
+   display: grid;
+   justify-items: center;
+   align-items: center;
+   background-color: #e06e3d;
+   color:            #fff;
+   border-radius: 50%;
+   box-shadow:    5px 5px 20px 0 rgba(46, 61, 73, 0.5);
+}
+
+
 
 /*
  * Keyframes - from animate.css
@@ -743,6 +762,10 @@ footer.footer__panel {
       grid-template-columns: 1fr 1fr 1fr;
       width:                 520px;
       justify-content:       center;
+   }
+
+   i.fa-star {
+      text-shadow: 3px 3px 10px rgba(46, 61, 73, 0.5);
    }
 
    .instructions,

@@ -294,53 +294,55 @@
       </ul>
    </section>
 
-      <!-- 'Game Over' Modal -->
-      <section id="won-game" class="modal none modal__won-game">
-         <div class="modal-content">
-            <div class="loader">
-               <i class="fa fa-check" aria-hidden="true"></i>
-            </div>
-            <h2>Congratulations! You Won!</h2>
-
-            <button id='button__won-game' class="button play-again">Play again!
-            </button>
+   <!-- 'Game Over' Modal -->
+   <section id="won-game" class="modal none modal__won-game">
+      <div class="modal-content">
+         <div class="loader">
+            <i class="fa fa-check" aria-hidden="true"></i>
          </div>
-      </section>
+         <h2>Congratulations! You Won!</h2>
 
-      <!-- 'You lost' Modal -->
-      <section id="lost-game" class="modal none modal__lost-game">
-         <div class="modal-content">
-            <div class="loader">
-               <i class="fa fa-clock-o" aria-hidden="true"></i>
-            </div>
-            <h2>Oh bummer, you lost!</h2>
-            <p>Sorry, but the clock ran out before you could complete this round.</p>
+         <button id='button__won-game' class="button play-again">Play again!
+         </button>
+      </div>
+   </section>
 
-            <button id='button__lost-game' class="button play-again">Play again!
-            </button>
+   <!-- 'You lost' Modal -->
+   <section id="lost-game" class="modal none modal__lost-game">
+      <div class="modal-content">
+         <div class="loader">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
          </div>
-      </section>
+         <h2>Oh bummer, you lost!</h2>
+         <p>Sorry, but the clock ran out before you could complete this round.</p>
 
-      <!-- 'Info' Modal -->
-      <section id="info-game" class="modal none modal__info-game">
-         <div class="modal-content">
-            <div class="loader">
-               <i class="fa fa-info" aria-hidden="true"></i>
-            </div>
-            <h2>Matching Game</h2>
-            <p>This is where the information goes.</p>
+         <button id='button__lost-game' class="button play-again">Play again!
+         </button>
+      </div>
+   </section>
 
-            <button id='button__info-game' class="button play-again">Play again!
-            </button>
+   <!-- 'Info' Modal -->
+   <section id="info-game" class="modal none modal__info-game">
+      <div class="modal-content">
+         <div class="loader">
+            <i class="fa fa-info" aria-hidden="true"></i>
          </div>
-      </section>
+         <h2>Matching Game</h2>
+         <p>This is where the information goes.</p>
+
+         <button id='button__info-game' class="button play-again">Play again!
+         </button>
+      </div>
+   </section>
 
 
    <section class="footer__panel">
       <footer class="footer__panel">
 
          <div class="instructions">
-            <i id="info-icon" class="fa fa-info"></i>
+            <span id="info-span" class="info-span block">
+               <i id="info-icon" class="fa fa-info"></i>
+            </span>
          </div>
 
          <div class="stars">
@@ -352,7 +354,9 @@
          </div>
 
          <div class="restart">
-            <i id="restart-icon" class="fa fa-repeat"></i>
+            <span id="restart-span" class="restart-span block">
+               <i id="restart-icon" class="fa fa-repeat"></i>
+            </span>
          </div>
       </footer>
    </section>

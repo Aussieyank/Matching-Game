@@ -419,17 +419,6 @@
 			initializeClock( 'clockdiv', deadline )
 		}
 
-		/**
-		 * @description
-		 */
-		function infoModal() {
-			infoClasses.remove( 'none' )
-			infoClasses.add( 'active' )
-			document.getElementById( 'info-game' ).style.display = 'none'
-			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
-		}
-
-		infoButton.addEventListener( 'click', infoModal, false )
 
 		/**
 		 * @description
