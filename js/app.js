@@ -246,14 +246,21 @@
 					openCards.push( card )
 					card.classList.add( 'open' )
 					card.classList.add( 'show' )
-					console.log( 'inside &&' )
+					console.log( 'openCards.length ' + openCards.length )
 
 					// check if the cards match
 					let firstCardType = openCards[ 0 ].dataset.card
 					console.log( 'firstCardType: ' + firstCardType )
 
-					// if cards don't match go away
+					// check for a match
 					if ( 2 === openCards.length ) {
+						if ( openCards[ 0 ].dataset.card == openCards[ 1 ].dataset.card ) {
+							console.log( 'this is a match' )
+						}
+						console.log( 'no match' )
+
+
+						// if cards don't match go away
 						setTimeout( function () {
 							openCards.forEach( function ( card ) {
 								card.classList.remove( 'open' )
@@ -262,7 +269,7 @@
 
 							openCards = []
 
-						}, 5000 )
+						}, 15000 )
 					}
 				}
 
