@@ -2,7 +2,7 @@
 //noinspection JSAnnotator,JSAnnotator
 (
 	function ( document ) {
-		//'use strict'
+		'use strict'
 
 		let body = document.querySelector( 'body' ),
 
@@ -27,18 +27,18 @@
 			timeinterval
 
 		let cards = [
-			'fa-diamond',       'fa-diamond',
+			'fa-diamond', 'fa-diamond',
 			'fa-paper-plane-o', 'fa-paper-plane-o',
-			'fa-anchor',        'fa-anchor',
-			'fa-bolt',          'fa-bolt',
-			'fa-cube',          'fa-cube',
-			'fa-leaf',          'fa-leaf',
-			'fa-bicycle',       'fa-bicycle',
-			'fa-bomb',          'fa-bomb',
-		];
+			'fa-anchor', 'fa-anchor',
+			'fa-bolt', 'fa-bolt',
+			'fa-cube', 'fa-cube',
+			'fa-leaf', 'fa-leaf',
+			'fa-bicycle', 'fa-bicycle',
+			'fa-bomb', 'fa-bomb',
+		]
 
 		function generateCard( card ) {
-				return `<li class="card">
+			return `<li class="card">
             	<i class="fa ${card}" data-class="${card}"></i>
             	<div class="container fire">
             	   <div class="flamer">
@@ -75,20 +75,40 @@
 		]
 
 
+
+		/** ************************************************************************
+		 *  Start the game
+		 ** ***********************************************************************/
+
+		function init() {
+			// set as a global var as it is called in numerous places
+			//initializeClock( 'clockdiv', deadline )
+			//registerEventListeners()
+			let deck = document.querySelector( '.deck' )
+			let cardHTML = cards.map( function ( card ) {
+				return generateCard( card )
+			} )
+
+			deck.innerHTML = cardHTML.join( '' )
+			//console.log( cardHTML )
+		}
+
+		init()
+
 		/**
 		 * @description Initialize the cards by looking up the `.card` nodes in the DOM,
 		 *              bind a click event, and then instantiating a new Card object.
 		 * @returns {any[]}
 		 */
-		function buildCards() {
-
-			// Array of game Card objects
-			let cardz = document.querySelectorAll( '.card' )
-
-			return (
-				Array.from( shuffle( cardz ) )
-			)
-		}
+		//function buildCards() {
+		//
+		//	// Array of game Card objects
+		//	let cardz = document.querySelectorAll( '.card' )
+		//
+		//	return (
+		//		Array.from( shuffle( cardz ) )
+		//	)
+		//}
 
 		/**
 		 * Display the cards on the page
@@ -213,52 +233,38 @@
 		 * @description Function to process cards.  Came from Mike Wales youtube broadcast
 		 * @param index
 		 */
-		//function addToOpenCards( index ) {
+			//function addToOpenCards( index ) {
 		let allCards = document.querySelectorAll( '.card' )
 		allCards.forEach( function ( card ) {
 			card.addEventListener( 'click', function ( e ) {
-				//console.log( 'openCards.length ' + openCards.length )
-				//setTimeout( function () {
+				console.log( 'openCards.length ' + openCards.length )
 
-					if ( ! card.classList.contains( 'open' ) &&
-					     ! card.classList.contains( 'show' ) &&
-					     ! card.classList.contains( 'match' ) ) {
-						openCards.push( card )
-						card.classList.add( 'open' )
-						card.classList.add( 'show' )
-						console.log( 'inside &&' )
+				// filter out card that matches itself
+				if ( ! card.classList.contains( 'open' ) &&
+				     ! card.classList.contains( 'show' ) &&
+				     ! card.classList.contains( 'match' ) ) {
+					openCards.push( card )
+					card.classList.add( 'open' )
+					card.classList.add( 'show' )
+					console.log( 'inside &&' )
 
+					// check if the cards match
+					let firstCardType = openCards[ 0 ].dataset.card
+					console.log( 'firstCardType: ' + firstCardType )
 
-						// check if the cards match
-
-
-						// if cards don't match go away
-						if ( 2 === openCards.length ) {
-							console.log( '2 ===' )
+					// if cards don't match go away
+					if ( 2 === openCards.length ) {
+						setTimeout( function () {
 							openCards.forEach( function ( card ) {
+								card.classList.remove( 'open' )
+								card.classList.remove( 'show' )
+							} )
 
-								let firstCard =
-									allCards[ openCards[ 0 ] ].children[ 0 ].getAttribute( 'data-class' )
-								let secondCard =
-									allCards[ openCards[ 1 ] ].children[ 0 ].getAttribute( 'data-class' )
+							openCards = []
 
-
-								// icons have to match and it has to be two separate cards not one
-								if ( firstCard === secondCard && openCards[ 0 ] !== openCards[ 1 ] ) {
-									card.classList.add( 'open' )
-									card.classList.add( 'show' )
-									openCards.push( card )
-
-									// just one card here now
-									console.log( 'just one card: ' + openCards.length )
-
-								}
-
-								//openCards = []
-							}, 150000 )
-						}
+						}, 5000 )
 					}
-				//} )
+				}
 
 			} )
 		} )
@@ -463,18 +469,17 @@
 		 * @param deadline
 		 */
 		function restoreState( deadline ) {
-			for ( let k = 0; k < 16; k ++ ) {
-				cardz[ k ].classList.remove( 'open' )
-				cardz[ k ].classList.remove( 'show' )
-				cardz[ k ].classList.remove( 'mismatch' )
-				cardz[ k ].classList.remove( 'match' )
-				cardz[ k ].classList.add( 'flip' )
-			}
-			//let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 )
-			stopTimer()
-			initializeClock( 'clockdiv', deadline )
+			//for ( let k = 0; k < 16; k ++ ) {
+			//	cardz[ k ].classList.remove( 'open' )
+			//	cardz[ k ].classList.remove( 'show' )
+			//	cardz[ k ].classList.remove( 'mismatch' )
+			//	cardz[ k ].classList.remove( 'match' )
+			//	cardz[ k ].classList.add( 'flip' )
+			//}
+			////let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 )
+			//stopTimer()
+			//initializeClock( 'clockdiv', deadline )
 		}
-
 
 		/**
 		 * @description
@@ -486,7 +491,6 @@
 			document.getElementById( 'won-game' ).style.display = 'none'
 			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
-
 		wonButton.addEventListener( 'click', closeWonModal, false )
 
 		/**
@@ -498,7 +502,6 @@
 			document.getElementById( 'lost-game' ).style.display = 'none'
 			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
-
 		lostButton.addEventListener( 'click', closeLostModal, false )
 
 		/**
@@ -510,7 +513,6 @@
 			document.getElementById( 'info-game' ).style.display = 'none'
 			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
-
 		infoButton.addEventListener( 'click', infoModal, false )
 
 		/**
@@ -522,7 +524,6 @@
 			infoClasses.add( 'active' )
 			document.getElementById( 'info-icon' ).style.display = 'none'
 		}
-
 		infoIcon.addEventListener( 'click', infoGame, false )
 
 		/**
@@ -543,28 +544,9 @@
 
 			//closeWonModal()
 		}
-
 		restartIcon.addEventListener( 'click', restartGame, false )
 
 
-		/** ************************************************************************
-		 *  Start the game
-		 ** ***********************************************************************/
-
-		function init() {
-			// set as a global var as it is called in numerous places
-			//initializeClock( 'clockdiv', deadline )
-			//registerEventListeners()
-			let deck = document.querySelector( '.deck' )
-			let cardHTML = cards.map( function( card ) {
-				return generateCard( card );
-			} );
-
-			deck.innerHTML = cardHTML.join('');
-			//console.log( cardHTML )
-		}
-
-		init()
 
 	}( document )
 )
