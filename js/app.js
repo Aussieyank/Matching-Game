@@ -20,8 +20,6 @@
 			infoIcon = document.getElementById( 'info-icon' ),
 			restartIcon = document.getElementById( 'restart-icon' ),
 
-			//cardz = buildCards(),
-			openCards = [],
 			isMatch = {},
 			userStats = {},
 			timeinterval
@@ -75,14 +73,13 @@
 		]
 
 
-
 		/** ************************************************************************
 		 *  Start the game
 		 ** ***********************************************************************/
 
-		function init() {
+		function gameInit() {
 			// set as a global var as it is called in numerous places
-			//initializeClock( 'clockdiv', deadline )
+			initializeClock( 'clockdiv', deadline )
 			//registerEventListeners()
 			let deck = document.querySelector( '.deck' )
 			let cardHTML = cards.map( function ( card ) {
@@ -93,7 +90,7 @@
 			//console.log( cardHTML )
 		}
 
-		init()
+		gameInit()
 
 		/**
 		 * @description Initialize the cards by looking up the `.card` nodes in the DOM,
@@ -235,9 +232,12 @@
 		 */
 			//function addToOpenCards( index ) {
 		let allCards = document.querySelectorAll( '.card' )
+		let openCards = []
 		allCards.forEach( function ( card ) {
 			card.addEventListener( 'click', function ( e ) {
-				console.log( 'openCards.length ' + openCards.length )
+				event.stopPropagation()
+				event.preventDefault()
+				// console.log( 'openCards.length ' + openCards.length )
 
 				// filter out card that matches itself
 				if ( ! card.classList.contains( 'open' ) &&
@@ -246,30 +246,42 @@
 					openCards.push( card )
 					card.classList.add( 'open' )
 					card.classList.add( 'show' )
-					console.log( 'openCards.length ' + openCards.length )
+					card.classList.add( 'flip' )
 
-					// check if the cards match
-					let firstCardType = openCards[ 0 ].dataset.card
-					console.log( 'firstCardType: ' + firstCardType )
+					alert(JSON.stringify(openCards[ 0 ].dataset.class, null, 4));
+					alert(JSON.stringify(openCards[ 1 ].dataset.class, null, 4));
+
+					console.log( 'openCards.length: ' + openCards.length )
 
 					// check for a match
 					if ( 2 === openCards.length ) {
-						if ( openCards[ 0 ].dataset.card == openCards[ 1 ].dataset.card ) {
+						if ( openCards[ 0 ].dataset.class === openCards[ 1 ].dataset.class ) {
 							console.log( 'this is a match' )
-						}
-						console.log( 'no match' )
+							openCards[ 0 ].classList.add( 'open' )
+							openCards[ 0 ].classList.add( 'show' )
+							openCards[ 0 ].classList.add( 'match' )
+							openCards[ 0 ].classList.add( 'flip' )
 
-
-						// if cards don't match go away
-						setTimeout( function () {
-							openCards.forEach( function ( card ) {
-								card.classList.remove( 'open' )
-								card.classList.remove( 'show' )
-							} )
-
+							openCards[ 1 ].classList.add( 'open' )
+							openCards[ 1 ].classList.add( 'show' )
+							openCards[ 1 ].classList.add( 'match' )
+							openCards[ 1 ].classList.add( 'flip' )
 							openCards = []
 
-						}, 15000 )
+						} else {
+
+							// if cards don't match go away
+							console.log( 'no match' )
+							setTimeout( function () {
+								openCards[ 0 ].classList.remove( 'open' )
+								openCards[ 0 ].classList.remove( 'show' )
+
+								openCards[ 1 ].classList.remove( 'open' )
+								openCards[ 1 ].classList.remove( 'show' )
+							}, 15000 )
+
+							openCards = []
+						}
 					}
 				}
 
@@ -386,30 +398,30 @@
 		/**
 		 * @description
 		 */
-		//function updateCounter() {
-		//	++ userStats.count
-		//	//updateMoves( userStats.count )
-		//}
-		//
-		//userStats.numberMoves = 0
+		function updateCounter() {
+			++ userStats.count
+			//updateMoves( userStats.count )
+		}
+
+		userStats.numberMoves = 0
 
 		/**
 		 * @description
 		 */
-		//function updateMoves() {
-		//	++ userStats.numberMoves
-		//	document.getElementById( 'updateMoves' ).innerHTML = userStats.numberMoves
-		//}
+		function updateMoves() {
+			++ userStats.numberMoves
+			document.getElementById( 'updateMoves' ).innerHTML = userStats.numberMoves
+		}
 
 		//userStats.numberScore = 0
 
 		/**
 		 * @description
 		 */
-		//function updateScore() {
-		//	userStats.numberScore += 100
-		//	document.getElementById( 'updateScore' ).innerHTML = userStats.numberScore
-		//}
+		function updateScore() {
+			userStats.numberScore += 100
+			document.getElementById( 'updateScore' ).innerHTML = userStats.numberScore
+		}
 
 
 		/**
@@ -476,16 +488,16 @@
 		 * @param deadline
 		 */
 		function restoreState( deadline ) {
-			//for ( let k = 0; k < 16; k ++ ) {
-			//	cardz[ k ].classList.remove( 'open' )
-			//	cardz[ k ].classList.remove( 'show' )
-			//	cardz[ k ].classList.remove( 'mismatch' )
-			//	cardz[ k ].classList.remove( 'match' )
-			//	cardz[ k ].classList.add( 'flip' )
-			//}
-			////let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 )
-			//stopTimer()
-			//initializeClock( 'clockdiv', deadline )
+			for ( let k = 0; k < 16; k ++ ) {
+				allCards[ k ].classList.remove( 'open' )
+				allCards[ k ].classList.remove( 'show' )
+				allCards[ k ].classList.remove( 'mismatch' )
+				allCards[ k ].classList.remove( 'match' )
+				allCards[ k ].classList.add( 'flip' )
+			}
+			//let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 )
+			stopTimer()
+			initializeClock( 'clockdiv', deadline )
 		}
 
 		/**
@@ -520,6 +532,7 @@
 			document.getElementById( 'info-game' ).style.display = 'none'
 			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
+
 		infoButton.addEventListener( 'click', infoModal, false )
 
 		/**
@@ -531,6 +544,7 @@
 			infoClasses.add( 'active' )
 			document.getElementById( 'info-icon' ).style.display = 'none'
 		}
+
 		infoIcon.addEventListener( 'click', infoGame, false )
 
 		/**
@@ -551,8 +565,8 @@
 
 			//closeWonModal()
 		}
-		restartIcon.addEventListener( 'click', restartGame, false )
 
+		restartIcon.addEventListener( 'click', restartGame, false )
 
 
 	}( document )
