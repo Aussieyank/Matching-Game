@@ -82,7 +82,7 @@
 			initializeClock( 'clockdiv', deadline )
 			//registerEventListeners()
 			let deck = document.querySelector( '.deck' )
-			let cardHTML = cards.map( function ( card ) {
+			let cardHTML = shuffle(cards).map( function ( card ) {
 				return generateCard( card )
 			} )
 
@@ -226,69 +226,73 @@
 		//	}
 		//}
 
-		/**
-		 * @description Function to process cards.  Came from Mike Wales youtube broadcast
-		 * @param index
-		 */
-			//function addToOpenCards( index ) {
+
 		let allCards = document.querySelectorAll( '.card' )
 		let openCards = []
-		allCards.forEach( function ( card ) {
-			card.addEventListener( 'click', function ( e ) {
+		for (let k = 0; k < allCards.length; k++) {
+
+			// use k as an index via the allCards stack
+			allCards[ k ].addEventListener( 'click', function ( e ) {
 				event.stopPropagation()
 				event.preventDefault()
-				// console.log( 'openCards.length ' + openCards.length )
 
-				// filter out card that matches itself
-				if ( ! card.classList.contains( 'open' ) &&
-				     ! card.classList.contains( 'show' ) &&
-				     ! card.classList.contains( 'match' ) ) {
-					openCards.push( card )
-					card.classList.add( 'open' )
-					card.classList.add( 'show' )
-					card.classList.add( 'flip' )
+				// filter out the card if it matches itself
+				if ( ! allCards[ k ].classList.contains( 'open' ) &&
+				     ! allCards[ k ].classList.contains( 'show' ) &&
+				     ! allCards[ k ].classList.contains( 'match' ) ) {
 
-					alert(JSON.stringify(openCards[ 0 ].dataset.class, null, 4));
-					alert(JSON.stringify(openCards[ 1 ].dataset.class, null, 4));
-
-					console.log( 'openCards.length: ' + openCards.length )
+					openCards.push( k )
+					allCards[ k ].classList.add( 'open' )
+					allCards[ k ].classList.add( 'show' )
+					//allCards[ k ].classList.add( 'flip' )
 
 					// check for a match
 					if ( 2 === openCards.length ) {
-						if ( openCards[ 0 ].dataset.class === openCards[ 1 ].dataset.class ) {
-							console.log( 'this is a match' )
-							openCards[ 0 ].classList.add( 'open' )
-							openCards[ 0 ].classList.add( 'show' )
-							openCards[ 0 ].classList.add( 'match' )
-							openCards[ 0 ].classList.add( 'flip' )
 
-							openCards[ 1 ].classList.add( 'open' )
-							openCards[ 1 ].classList.add( 'show' )
-							openCards[ 1 ].classList.add( 'match' )
-							openCards[ 1 ].classList.add( 'flip' )
+						let firstCard  = allCards[openCards[0]].children[0].getAttribute( 'data-class')
+						let secondCard = allCards[openCards[1]].children[0].getAttribute( 'data-class')
+
+						//alert(JSON.stringify(firstCard, null, 4));
+						//alert(JSON.stringify(secondCard, null, 4));
+
+						// do they match?
+						if ( firstCard === secondCard ) {
+
+							allCards[openCards[0]].classList.remove( 'open' )
+							allCards[openCards[0]].classList.remove( 'show' )
+							allCards[openCards[0]].classList.add( 'match' )
+							allCards[openCards[0]].classList.add( 'flip' )
+
+							allCards[openCards[1]].classList.remove( 'open' )
+							allCards[openCards[1]].classList.remove( 'show' )
+							allCards[openCards[1]].classList.add( 'match' )
+							allCards[openCards[1]].classList.add( 'flip' )
+
 							openCards = []
 
 						} else {
+							// if cards don't match reset back to normal and pop the stack
 
-							// if cards don't match go away
-							console.log( 'no match' )
 							setTimeout( function () {
-								openCards[ 0 ].classList.remove( 'open' )
-								openCards[ 0 ].classList.remove( 'show' )
 
-								openCards[ 1 ].classList.remove( 'open' )
-								openCards[ 1 ].classList.remove( 'show' )
-							}, 15000 )
+								allCards[ openCards[0] ].classList.remove( 'open' )
+								allCards[ openCards[0] ].classList.remove( 'show' )
+								allCards[ openCards[0] ].classList.remove( 'match' )
+								allCards[ openCards[0] ].classList.remove( 'flip' )
 
-							openCards = []
+								allCards[ openCards[1] ].classList.remove( 'open' )
+								allCards[ openCards[1] ].classList.remove( 'show' )
+								allCards[ openCards[1] ].classList.remove( 'match' )
+								allCards[ openCards[1] ].classList.remove( 'flip' )
+
+								openCards = []
+
+							}, 1000 )
 						}
 					}
 				}
-
 			} )
-		} )
-
-		//}
+		}
 
 		/**
 		 * @description if the cards do match, lock the cards in the open position
