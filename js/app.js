@@ -4,7 +4,6 @@
 	function ( document ) {
 		//'use strict'
 
-
 		let body = document.querySelector( 'body' ),
 
 			numberOfSeconds = 180,
@@ -21,11 +20,41 @@
 			infoIcon = document.getElementById( 'info-icon' ),
 			restartIcon = document.getElementById( 'restart-icon' ),
 
-			cardz = buildCards(),
+			//cardz = buildCards(),
 			openCards = [],
 			isMatch = {},
 			userStats = {},
 			timeinterval
+
+		let cards = [
+			'fa-diamond',       'fa-diamond',
+			'fa-paper-plane-o', 'fa-paper-plane-o',
+			'fa-anchor',        'fa-anchor',
+			'fa-bolt',          'fa-bolt',
+			'fa-cube',          'fa-cube',
+			'fa-leaf',          'fa-leaf',
+			'fa-bicycle',       'fa-bicycle',
+			'fa-bomb',          'fa-bomb',
+		];
+
+		function generateCard( card ) {
+				return `<li class="card">
+            	<i class="fa ${card}" data-class="${card}"></i>
+            	<div class="container fire">
+            	   <div class="flamer">
+            	      <a href="/">
+            	         <div class="flame-wrap">
+            	            <div class="flame1 flame"></div>
+            	            <div class="flame2 flame"></div>
+            	            <div class="flame3 flame"></div>
+            	            <div class="flame4 flame"></div>
+            	            <div class="flame5 flame"></div>
+            	         </div>
+            	      </a>
+            	   </div>
+            	</div>
+         	</li>`
+		}
 
 		let starsRules = [
 			// 1 star minimum
@@ -102,35 +131,35 @@
 		 * @description Event listener for an array of cards. If a card is clicked call display
 		 *              the icon on that card.
 		 */
-		function registerEventListeners() {
-			let cardz = document.getElementsByClassName( 'card' )
-
-			for ( let k = 0; k < cardz.length; k ++ ) {
-				cardz[ k ].addEventListener( 'click', function ( event ) {
-
-					event.stopPropagation()
-					event.preventDefault()
-					displayCards( k )
-				}, false )
-			}
-		}
+		//function registerEventListeners() {
+		//	let cardz = document.getElementsByClassName( 'card' )
+		//
+		//	for ( let k = 0; k < cardz.length; k ++ ) {
+		//		cardz[ k ].addEventListener( 'click', function ( event ) {
+		//
+		//			event.stopPropagation()
+		//			event.preventDefault()
+		//			displayCards( k )
+		//		}, false )
+		//	}
+		//}
 
 		/**
 		 * @description Call the flipCard function which will display the icon
 		 * @param index
 		 */
-		function displayCards( index ) {
-			flipCard( index )
-		}
+		//function displayCards( index ) {
+		//	flipCard( index )
+		//}
 
 		/**
 		 * @description Display the card's symbol
 		 * @param index
 		 */
-		function flipCard( index ) {
-
-			addToOpenCards( index )
-		}
+		//function flipCard( index ) {
+		//
+		//	addToOpenCards( index )
+		//}
 
 		/**
 		 * @description add the card to a *list* of "open" cards (put this functionality in
@@ -185,30 +214,55 @@
 		 * @param index
 		 */
 		//function addToOpenCards( index ) {
-			cardz.forEach( function ( card ) {
-				card.addEventListener( 'click', function ( e ) {
-					//console.log( 'openCards[ index ] ' +openCards[ index ])
+		let allCards = document.querySelectorAll( '.card' )
+		allCards.forEach( function ( card ) {
+			card.addEventListener( 'click', function ( e ) {
+				//console.log( 'openCards.length ' + openCards.length )
+				//setTimeout( function () {
 
 					if ( ! card.classList.contains( 'open' ) &&
 					     ! card.classList.contains( 'show' ) &&
 					     ! card.classList.contains( 'match' ) ) {
 						openCards.push( card )
-						card.classList.add( 'open', 'show' )
-						console.log( 'Open Cards: ', cardz[ openCards[ 0 ] ] )
+						card.classList.add( 'open' )
+						card.classList.add( 'show' )
+						console.log( 'inside &&' )
 
+
+						// check if the cards match
+
+
+						// if cards don't match go away
 						if ( 2 === openCards.length ) {
-							setTimeout( function () {
-								openCards.forEach( function ( indexcard ) {
-									cardz[ openCards[ card ] ].classList.remove( 'open' )
-									cardz[ openCards[ card ] ].classList.remove( 'show' )
-								} )
+							console.log( '2 ===' )
+							openCards.forEach( function ( card ) {
 
-								openCards = []
-							}, 1500 )
+								let firstCard =
+									allCards[ openCards[ 0 ] ].children[ 0 ].getAttribute( 'data-class' )
+								let secondCard =
+									allCards[ openCards[ 1 ] ].children[ 0 ].getAttribute( 'data-class' )
+
+
+								// icons have to match and it has to be two separate cards not one
+								if ( firstCard === secondCard && openCards[ 0 ] !== openCards[ 1 ] ) {
+									card.classList.add( 'open' )
+									card.classList.add( 'show' )
+									openCards.push( card )
+
+									// just one card here now
+									console.log( 'just one card: ' + openCards.length )
+
+								}
+
+								//openCards = []
+							}, 150000 )
 						}
 					}
-				} )
+				//} )
+
 			} )
+		} )
+
 		//}
 
 		/**
@@ -216,37 +270,37 @@
 		 *              (put this functionality in another function that you call from this one)
 		 * @param index
 		 */
-		function getMatch( index ) {
-
-			let firstCard = cardz[ openCards[ 0 ] ].children[ 0 ].getAttribute(
-				'data-class' )
-			let secondCard = cardz[ openCards[ 1 ] ].children[ 0 ].getAttribute(
-				'data-class' )
-
-			cardz[ index ].classList.add( 'open' )
-			cardz[ index ].classList.add( 'show' )
-
-			// icons have to match and it has to be two separate cards not one
-			if ( firstCard === secondCard && openCards[ 0 ] !== openCards[ 1 ] ) {
-
-				updateCounter()
-				// These can be locked safely, remove the open and show classes
-				lockCards()
-			} else {
-
-				//sleep( 3 ).then( () => {
-				//	// tell the player the cards are mismatched.
-				//	setTimeout( function () {
-				//
-				//		if ( 2 === isMatch.count ) {
-				//			cardz[ openCards[ 0 ] ].classList.add( 'mismatch' )
-				//			cardz[ openCards[ 1 ] ].classList.add( 'mismatch' )
-				//		}
-				//	}, 500 )
-				//} )
-				//releaseCards()
-			}
-		}
+		//function getMatch( index ) {
+		//
+		//	let firstCard = cardz[ openCards[ 0 ] ].children[ 0 ].getAttribute(
+		//		'data-class' )
+		//	let secondCard = cardz[ openCards[ 1 ] ].children[ 0 ].getAttribute(
+		//		'data-class' )
+		//
+		//	cardz[ index ].classList.add( 'open' )
+		//	cardz[ index ].classList.add( 'show' )
+		//
+		//	// icons have to match and it has to be two separate cards not one
+		//	if ( firstCard === secondCard && openCards[ 0 ] !== openCards[ 1 ] ) {
+		//
+		//		updateCounter()
+		//		// These can be locked safely, remove the open and show classes
+		//		lockCards()
+		//	} else {
+		//
+		//		//sleep( 3 ).then( () => {
+		//		//	// tell the player the cards are mismatched.
+		//		//	setTimeout( function () {
+		//		//
+		//		//		if ( 2 === isMatch.count ) {
+		//		//			cardz[ openCards[ 0 ] ].classList.add( 'mismatch' )
+		//		//			cardz[ openCards[ 1 ] ].classList.add( 'mismatch' )
+		//		//		}
+		//		//	}, 500 )
+		//		//} )
+		//		//releaseCards()
+		//	}
+		//}
 
 		function getStars() {
 
@@ -255,30 +309,30 @@
 		/**
 		 * @description
 		 */
-		function lockCards() {
-
-			for ( let k = 0; k < 2; k ++ ) {
-				cardz[ openCards[ k ] ].classList.remove( 'open' )
-				cardz[ openCards[ k ] ].classList.remove( 'show' )
-				cardz[ openCards[ k ] ].classList.add( 'match' )
-				updateScore()
-
-				sleep( 5 ).then( () => {
-					// empty the array for the next match.
-					window.setTimeout( () => {
-						let trash = openCards.pop()
-						trash = openCards.pop()
-						isMatch.count = 0
-					} )
-				} )
-				if ( document.querySelectorAll( '.match' ).length === 16 ) {
-					stopTimer()
-					clearInterval( timeinterval )
-					wonClasses.remove( 'none' )
-					wonClasses.add( 'active' )
-				}
-			}
-		}
+		//function lockCards() {
+		//
+		//	for ( let k = 0; k < 2; k ++ ) {
+		//		cardz[ openCards[ k ] ].classList.remove( 'open' )
+		//		cardz[ openCards[ k ] ].classList.remove( 'show' )
+		//		cardz[ openCards[ k ] ].classList.add( 'match' )
+		//		updateScore()
+		//
+		//		sleep( 5 ).then( () => {
+		//			// empty the array for the next match.
+		//			window.setTimeout( () => {
+		//				let trash = openCards.pop()
+		//				trash = openCards.pop()
+		//				isMatch.count = 0
+		//			} )
+		//		} )
+		//		if ( document.querySelectorAll( '.match' ).length === 16 ) {
+		//			stopTimer()
+		//			clearInterval( timeinterval )
+		//			wonClasses.remove( 'none' )
+		//			wonClasses.add( 'active' )
+		//		}
+		//	}
+		//}
 
 		/**
 		 * @description
@@ -294,55 +348,55 @@
 		/**
 		 * @description
 		 */
-		function releaseCards() {
-			let cardz = document.querySelectorAll( '.card' )
-
-			for ( let k = 0; k < 2; k ++ ) {
-
-				// Usage!
-				sleep( 1000 ).then( () => {
-
-					for ( let k = 0; k < 2; k ++ ) {
-						cardz[ openCards[ k ] ].classList.remove( 'open' )
-						cardz[ openCards[ k ] ].classList.remove( 'show' )
-						cardz[ openCards[ k ] ].classList.remove( 'mismatch' )
-						console.log( cardz )
-					}
-					// Do something after the sleep!
-					let trash = openCards.pop()
-					trash = openCards.pop()
-					isMatch.count = 0
-				}, 300 )
-			}
-		}
-
-		/**
-		 * @description
-		 */
-		function updateCounter() {
-			++ userStats.count
-			//updateMoves( userStats.count )
-		}
-
-		userStats.numberMoves = 0
+		//function releaseCards() {
+		//	let cardz = document.querySelectorAll( '.card' )
+		//
+		//	for ( let k = 0; k < 2; k ++ ) {
+		//
+		//		// Usage!
+		//		sleep( 1000 ).then( () => {
+		//
+		//			for ( let k = 0; k < 2; k ++ ) {
+		//				cardz[ openCards[ k ] ].classList.remove( 'open' )
+		//				cardz[ openCards[ k ] ].classList.remove( 'show' )
+		//				cardz[ openCards[ k ] ].classList.remove( 'mismatch' )
+		//				console.log( cardz )
+		//			}
+		//			// Do something after the sleep!
+		//			let trash = openCards.pop()
+		//			trash = openCards.pop()
+		//			isMatch.count = 0
+		//		}, 300 )
+		//	}
+		//}
 
 		/**
 		 * @description
 		 */
-		function updateMoves() {
-			++ userStats.numberMoves
-			document.getElementById( 'updateMoves' ).innerHTML = userStats.numberMoves
-		}
-
-		userStats.numberScore = 0
+		//function updateCounter() {
+		//	++ userStats.count
+		//	//updateMoves( userStats.count )
+		//}
+		//
+		//userStats.numberMoves = 0
 
 		/**
 		 * @description
 		 */
-		function updateScore() {
-			userStats.numberScore += 100
-			document.getElementById( 'updateScore' ).innerHTML = userStats.numberScore
-		}
+		//function updateMoves() {
+		//	++ userStats.numberMoves
+		//	document.getElementById( 'updateMoves' ).innerHTML = userStats.numberMoves
+		//}
+
+		//userStats.numberScore = 0
+
+		/**
+		 * @description
+		 */
+		//function updateScore() {
+		//	userStats.numberScore += 100
+		//	document.getElementById( 'updateScore' ).innerHTML = userStats.numberScore
+		//}
 
 
 		/**
@@ -499,8 +553,15 @@
 
 		function init() {
 			// set as a global var as it is called in numerous places
-			initializeClock( 'clockdiv', deadline )
+			//initializeClock( 'clockdiv', deadline )
 			//registerEventListeners()
+			let deck = document.querySelector( '.deck' )
+			let cardHTML = cards.map( function( card ) {
+				return generateCard( card );
+			} );
+
+			deck.innerHTML = cardHTML.join('');
+			//console.log( cardHTML )
 		}
 
 		init()
