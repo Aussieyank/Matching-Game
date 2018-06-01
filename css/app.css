@@ -33,6 +33,7 @@ h1, h2 {
    font-family: Spinnaker, sans-serif;
    font-weight: 300;
    text-align:  center;
+   text-shadow: 3px 3px 10px rgba(46, 61, 73, 0.5);
 }
 
 h1 {
@@ -132,7 +133,7 @@ h2 {
    height:       100px;
 }
 
-#updateMoves,
+#movesID,
 #clockdiv,
 #timeRemainingId,
 #sec,
@@ -140,6 +141,10 @@ h2 {
    display:      grid;
    justify-self: center;
    align-items:  center;
+}
+
+#timeRemainingId {
+   box-shadow:    5px 5px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
 .container ul {
@@ -177,7 +182,7 @@ footer.footer__panel {
    justify-content:       center;
 }
 
-.instructions,
+/*.instructions,*/
 .stars,
 .restart {
    justify-self: center;
@@ -193,13 +198,24 @@ footer.footer__panel {
 }
 
 #overlay {
-   /*//background: rgba( 0, 0, 0, .8 );*/
    height: 100%;
    width: 100%;
    position: absolute;
    z-index: 1000;
    top: 0;
    left: 0;
+}
+
+#overlay a.info-game.close {
+   color: #fff;
+   text-decoration: none;
+   font-size: 2rem;
+   font-family: Helvetica;
+   border: 4px #fff solid;
+   padding: 10px;
+   top: 10px;
+   right: 10px;
+   position: absolute;
 }
 
 #overlay a.lost-game.close {
@@ -212,7 +228,6 @@ footer.footer__panel {
    top: 10px;
    right: 10px;
    position: absolute;
-   /*//background: rgba( 255, 255, 255, .1);*/
 }
 
 #overlay a.won-game.close {
@@ -292,12 +307,6 @@ footer.footer__panel {
    line-height:      50px;
    text-align:       center;
 }
-
-/*.modal .active {*/
-   /*display: block;*/
-/*}*/
-
-
 
 @-webkit-keyframes flame-flicker {
    /* flame pulses */
@@ -410,6 +419,7 @@ footer.footer__panel {
    display: block;
 }
 
+   /*!*background-color: #fff;*!*/
 .modal__lost-game {
    display: none;
    background-color: #e06e3d;
@@ -462,6 +472,35 @@ footer.footer__panel {
    animation: 1s fadeIn;
 }
 
+.modal__info-game {
+   display: none;
+   background-color: #fff;
+
+   text-align: left;
+   width: 80%;
+   /*height: 100%;*/
+   margin: 0 auto;
+   padding: 10px;
+
+   font-size: 20px;
+
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+}
+
+.modal.active2 {
+   max-width: 80%;
+   display: flex;
+   -webkit-box-orient: vertical;
+   -webkit-box-direction: normal;
+   flex-direction: column;
+   overflow-y: auto;
+   animation: 1s fadeIn;
+}
+
 .modal .loader {
    font-size: 60px;
    font-weight: 100;
@@ -470,6 +509,7 @@ footer.footer__panel {
    animation: 1s scaleBigText 1s;
 }
 
+.modal__info-game .loader,
 .modal__lost-game .loader {
    color: #fff;
 
@@ -493,6 +533,20 @@ footer.footer__panel {
    background-color: #fff;
    color: #333;
 }
+
+#info-span,
+#restart-span {
+   width: 54px;
+   height: 54px;
+   display: grid;
+   justify-items: center;
+   align-items: center;
+   background-color: #e06e3d;
+   color:            #fff;
+   border-radius: 50%;
+   box-shadow:    5px 5px 20px 0 rgba(46, 61, 73, 0.5);
+}
+
 
 
 /*
@@ -691,6 +745,10 @@ footer.footer__panel {
       grid-template-columns: 1fr 1fr 1fr;
       width:                 520px;
       justify-content:       center;
+   }
+
+   i.fa-star {
+      text-shadow: 3px 3px 10px rgba(46, 61, 73, 0.5);
    }
 
    .instructions,
