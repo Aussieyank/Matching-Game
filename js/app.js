@@ -3,7 +3,7 @@
 	function ( document ) {
 		'use strict'
 
-		let numberOfSeconds = 30,
+		let numberOfSeconds = 120,
 			deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ),
 			stars = document.querySelectorAll( '.stars i' ),
 
@@ -131,6 +131,7 @@
 				     ! allCards[ k ].classList.contains( 'show' ) &&
 				     ! allCards[ k ].classList.contains( 'match' ) ) {
 
+					// prevent more than two cards at a time
 					if ( openCards.length < 2 ) {
 						openCards.push( k )
 						allCards[ k ].classList.add( 'open' )
@@ -185,7 +186,7 @@
 								}, 600 )  // timeout
 							}
 						} // if ( 2 === openCards.length )
-					}
+					} // // prevent more than two cards at a time
 				}
 			} ) // allCards[ k ].addEventListener(
 		} // for
