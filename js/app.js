@@ -24,6 +24,7 @@
 
 			infoIcon = document.getElementById( 'info-icon' ),
 			restartIcon = document.getElementById( 'restart-icon' ),
+
 			timeinterval
 
 		let userStats = {
@@ -75,6 +76,7 @@
          	</li>`
 		}
 
+
 		/** ************************************************************************
 		 *  Start the game
 		 ** ***********************************************************************/
@@ -82,6 +84,7 @@
 		function init() {
 			// set as a global var as it is called in numerous places
 			initializeClock( 'clockdiv', deadline )
+			//registerEventListeners()
 			let deck = document.querySelector( '.deck' )
 			let cardHTML = shuffle( cards ).map( function ( card ) {
 				return generateCard( card )
@@ -89,7 +92,6 @@
 
 			deck.innerHTML = cardHTML.join( '' )
 			//console.log( cardHTML )
-			startYourEngines()
 		}
 
 		init()
@@ -112,9 +114,10 @@
 		 *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one) TODO callModal();
 		 */
 
-		function startYourEngines() {
+
 		let allCards = document.querySelectorAll( '.card' )
 		let openCards = []
+
 
 		// use k as an index via the allCards stack
 		for ( let k = 0; k < allCards.length; k ++ ) {
@@ -133,6 +136,7 @@
 						openCards.push( k )
 						allCards[ k ].classList.add( 'open' )
 						allCards[ k ].classList.add( 'show' )
+
 
 						// check for a match
 						if ( 2 === openCards.length ) {
@@ -186,7 +190,8 @@
 				}
 			} ) // allCards[ k ].addEventListener(
 		} // for
-		}
+
+
 		/**
 		 *  @description Function used to update the number
 		 *               of moves in pairs, and to hide starts when
@@ -227,8 +232,10 @@
 					star2.classList.add( 'hidden-star' )
 					break
 			}
+
 			document.getElementById( 'updateMoves' ).innerHTML = userStats.moves
 		}
+
 
 		/**
 		 * @description Update the score on the deck, and call refreshScore to
@@ -345,24 +352,37 @@
 		 *
 		 */
 		function closeWonModal() {
-			location.reload();
+			wonClasses.remove( 'none' )
+			wonClasses.add( 'active' )
+			document.getElementById( 'won-game' ).style.display = 'none'
+			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
+
 		wonButton.addEventListener( 'click', closeWonModal, false )
 
 		/**
 		 * @description open modal and give stats when user loses
 		 */
 		function closeLostModal() {
-			location.reload();
+
+			lostClasses.remove( 'none' )
+			lostClasses.add( 'active' )
+			document.getElementById( 'lost-game' ).style.display = 'none'
+			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
+
 		lostButton.addEventListener( 'click', closeLostModal, false )
 
 		/**
 		 * @description  give user ifo from rubic
 		 */
 		function infoModal() {
-			location.reload();
+			infoClasses.remove( 'none' )
+			infoClasses.add( 'active2' )
+			document.getElementById( 'info-game' ).style.display = 'none'
+			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
+
 		infoButton.addEventListener( 'click', infoModal, false )
 
 		/**
@@ -373,24 +393,25 @@
 			infoClasses.remove( 'none' )
 			infoClasses.add( 'active2' )
 		}
+
 		infoIcon.addEventListener( 'click', infoGame, false )
 
 		/**
 		 * @description event listener to start a new game
 		 */
 		function restartGame() {
-			location.reload();
 
-			//if ( document.querySelectorAll( '.match' ).length === 16 ) {
-			//	wonClasses.remove( 'none' )
-			//	wonClasses.remove( 'active' )
-			//
-			//} else {
-			//	lostClasses.remove( 'none' )
-			//	lostClasses.remove( 'active' )
-			//}
-			//restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
+			if ( document.querySelectorAll( '.match' ).length === 16 ) {
+				wonClasses.remove( 'none' )
+				wonClasses.remove( 'active' )
+
+			} else {
+				lostClasses.remove( 'none' )
+				lostClasses.remove( 'active' )
+			}
+			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
+
 		restartIcon.addEventListener( 'click', restartGame, false )
 
 		/**
