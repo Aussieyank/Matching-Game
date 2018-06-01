@@ -400,16 +400,7 @@
 		 * @description event listener to start a new game
 		 */
 		function restartGame() {
-
-			if ( document.querySelectorAll( '.match' ).length === 16 ) {
-				wonClasses.remove( 'none' )
-				wonClasses.remove( 'active' )
-
-			} else {
-				lostClasses.remove( 'none' )
-				lostClasses.remove( 'active' )
-			}
-			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
+			location.reload();
 		}
 
 		restartIcon.addEventListener( 'click', restartGame, false )
