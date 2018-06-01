@@ -352,10 +352,7 @@
 		 *
 		 */
 		function closeWonModal() {
-			wonClasses.remove( 'none' )
-			wonClasses.add( 'active' )
-			document.getElementById( 'won-game' ).style.display = 'none'
-			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
+			location.reload();
 		}
 
 		wonButton.addEventListener( 'click', closeWonModal, false )
@@ -364,11 +361,7 @@
 		 * @description open modal and give stats when user loses
 		 */
 		function closeLostModal() {
-
-			lostClasses.remove( 'none' )
-			lostClasses.add( 'active' )
-			document.getElementById( 'lost-game' ).style.display = 'none'
-			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
+			location.reload();
 		}
 
 		lostButton.addEventListener( 'click', closeLostModal, false )
@@ -377,10 +370,7 @@
 		 * @description  give user ifo from rubic
 		 */
 		function infoModal() {
-			infoClasses.remove( 'none' )
-			infoClasses.add( 'active2' )
-			document.getElementById( 'info-game' ).style.display = 'none'
-			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
+			location.reload();
 		}
 
 		infoButton.addEventListener( 'click', infoModal, false )
