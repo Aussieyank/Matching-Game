@@ -4,7 +4,7 @@
 	function ( document ) {
 		'use strict'
 
-		let numberOfSeconds = 30,
+		let numberOfSeconds = 120,
 			deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ),
 			stars = document.querySelectorAll('.stars i'),
 
@@ -70,29 +70,6 @@
             	</div>
          	</li>`
 		}
-
-		let starRules = [
-			// 1 star minimum
-			{
-				minMoves: 21,
-				minScore: 4800,
-			},
-			// 2 stars minimum
-			{
-				minMoves: 17,
-				minScore: 4800,
-			},
-			// 3 stars minimum
-			{
-				minMoves: 13,
-				minScore: 18000,
-			},
-		]
-
-		let star =  {
-				active: 'fa-star',
-				inactive: 'fa-star-o'
-			}
 
 
 		/** ************************************************************************
@@ -207,34 +184,6 @@
 
 		function getStars() {
 
-		}
-
-		function numberStars( numberStars ) {
-			userStats.stars.forEach((star, index) => {
-				let toReplace = 'inactive';
-				let replaceWith = 'active';
-
-				if ((index + 1) > numberStars) {
-					toReplace = 'active';
-					replaceWith = 'inactive';
-				}
-
-				if (!star.classList.contains(this._config.stars[replaceWith])) {
-					star.classList.remove(    this._config.stars[toReplace]);
-					star.classList.add(       this._config.stars[replaceWith]);
-				}
-			});
-		};
-
-		/**
-		 * @description
-		 * @param time
-		 * @returns {Promise<any>}
-		 */
-		// https://davidwalsh.name/javascript-sleep-function
-		// https://zeit.co/blog/async-and-await
-		function sleep( time ) {
-			return new Promise( ( resolve ) => setTimeout( resolve, time ) )
 		}
 
 		/**
