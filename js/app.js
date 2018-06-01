@@ -380,16 +380,6 @@
 		 */
 		function restartGame() {
 			location.reload();
-
-			//if ( document.querySelectorAll( '.match' ).length === 16 ) {
-			//	wonClasses.remove( 'none' )
-			//	wonClasses.remove( 'active' )
-			//
-			//} else {
-			//	lostClasses.remove( 'none' )
-			//	lostClasses.remove( 'active' )
-			//}
-			//restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
 		restartIcon.addEventListener( 'click', restartGame, false )
 
