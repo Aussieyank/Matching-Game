@@ -1,15 +1,14 @@
 // Wrapped it into an IIFE to protect namespacing.
-//noinspection JSAnnotator,JSAnnotator
 (
 	function ( document ) {
 		'use strict'
 
-		let numberOfSeconds = 120,
+		let numberOfSeconds = 30,
 			deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ),
-			stars = document.querySelectorAll('.stars i'),
+			stars = document.querySelectorAll( '.stars i' ),
 
-			starsOne   = document.getElementById( 'star1' ),
-			starsTwo   = document.getElementById( 'star2' ),
+			starsOne = document.getElementById( 'star1' ),
+			starsTwo = document.getElementById( 'star2' ),
 			starsThree = document.getElementById( 'star3' ),
 
 			wonHTML = document.getElementById( 'wonHTML' ),
@@ -28,24 +27,24 @@
 
 			timeinterval
 
-		let userStats =  {
+		let userStats = {
 			numberOfSeconds: 30,
-			seconds:          0,
-			timeUsed:         0,
-			starsCount:       3,
-			moves:            0,
-			stars:            0,
-			score:            0
+			seconds:         0,
+			timeUsed:        0,
+			starsCount:      3,
+			moves:           0,
+			stars:           0,
+			score:           0,
 		}
 
-		userStats.seconds     = getTimeRemaining(deadline).seconds
-		userStats.timeUsed    = numberOfSeconds - getTimeRemaining(deadline).seconds
+		userStats.seconds = getTimeRemaining( deadline ).seconds
+		userStats.timeUsed = numberOfSeconds - getTimeRemaining( deadline ).seconds
 
 		//alert(JSON.stringify(userStats.timeUsed, null, 4));
 		//alert(JSON.stringify(getTimeRemaining(deadline).seconds), null, 4);
 
-		lostHTML.innerHTML = `<p class="modal__results">You did it in ${userStats.timeUsed} seconds and ${userStats.moves} moves.  You earned ${userStats.starsCount} stars and got ${userStats.score} points.</p>`;
-		wonHTML.innerHTML  = `<p class="modal__results">You did it in ${userStats.timeUsed} seconds and ${userStats.moves} moves.  You earned ${userStats.starsCount} stars and got ${userStats.score} points.</p>`;
+		lostHTML.innerHTML = `<p class="modal__results">You did it in ${userStats.timeUsed} seconds and ${userStats.moves} moves.  You earned ${userStats.starsCount} stars and got ${userStats.score} points.</p>`
+		wonHTML.innerHTML = `<p class="modal__results">You did it in ${userStats.timeUsed} seconds and ${userStats.moves} moves.  You earned ${userStats.starsCount} stars and got ${userStats.score} points.</p>`
 
 		let cards = [
 			'fa-diamond', 'fa-diamond',
@@ -87,7 +86,7 @@
 			initializeClock( 'clockdiv', deadline )
 			//registerEventListeners()
 			let deck = document.querySelector( '.deck' )
-			let cardHTML = shuffle(cards).map( function ( card ) {
+			let cardHTML = shuffle( cards ).map( function ( card ) {
 				return generateCard( card )
 			} )
 
@@ -118,9 +117,11 @@
 
 		let allCards = document.querySelectorAll( '.card' )
 		let openCards = []
-		for ( let k = 0; k < allCards.length; k++ ) {
 
-			// use k as an index via the allCards stack
+
+		// use k as an index via the allCards stack
+		for ( let k = 0; k < allCards.length; k ++ ) {
+
 			allCards[ k ].addEventListener( 'click', function ( e ) {
 				event.stopPropagation()
 				event.preventDefault()
@@ -130,136 +131,138 @@
 				     ! allCards[ k ].classList.contains( 'show' ) &&
 				     ! allCards[ k ].classList.contains( 'match' ) ) {
 
-					openCards.push( k )
-					allCards[ k ].classList.add( 'open' )
-					allCards[ k ].classList.add( 'show' )
+					if ( openCards.length < 2 ) {
+						openCards.push( k )
+						allCards[ k ].classList.add( 'open' )
+						allCards[ k ].classList.add( 'show' )
 
 
-					// check for a match
-					if ( 2 === openCards.length ) {
+						// check for a match
+						if ( 2 === openCards.length ) {
 
-						// moves come in a pair
-						updateMoves()
+							// moves come in a pair
+							updateMoves()
 
-						let firstCard  = allCards[openCards[0]].children[0].getAttribute( 'data-class')
-						let secondCard = allCards[openCards[1]].children[0].getAttribute( 'data-class')
+							let firstCard = allCards[ openCards[ 0 ] ].children[ 0 ].getAttribute( 'data-class' )
+							let secondCard = allCards[ openCards[ 1 ] ].children[ 0 ].getAttribute( 'data-class' )
 
-						//alert(JSON.stringify(firstCard, null, 4));
-						//alert(JSON.stringify(secondCard, null, 4));
+							//alert(JSON.stringify(firstCard, null, 4));
+							//alert(JSON.stringify(secondCard, null, 4));
 
-						// do they match?
-						if ( firstCard === secondCard ) {
+							// do they match?
+							if ( firstCard === secondCard ) {
 
-							allCards[openCards[0]].classList.remove( 'open' )
-							allCards[openCards[0]].classList.remove( 'show' )
-							allCards[openCards[0]].classList.add( 'match' )
-							allCards[openCards[0]].classList.add( 'flip' )
+								allCards[ openCards[ 0 ] ].classList.remove( 'open' )
+								allCards[ openCards[ 0 ] ].classList.remove( 'show' )
+								allCards[ openCards[ 0 ] ].classList.add( 'match' )
+								allCards[ openCards[ 0 ] ].classList.add( 'flip' )
 
-							allCards[openCards[1]].classList.remove( 'open' )
-							allCards[openCards[1]].classList.remove( 'show' )
-							allCards[openCards[1]].classList.add( 'match' )
-							allCards[openCards[1]].classList.add( 'flip' )
+								allCards[ openCards[ 1 ] ].classList.remove( 'open' )
+								allCards[ openCards[ 1 ] ].classList.remove( 'show' )
+								allCards[ openCards[ 1 ] ].classList.add( 'match' )
+								allCards[ openCards[ 1 ] ].classList.add( 'flip' )
 
-							updateScore()
-							openCards = []
+								updateScore()
+								openCards = []  // reset for next pair of cards
 
-						} else {
-							// if cards don't match reset back to normal and pop the stack
+							} else {
+								// if cards don't match reset back to normal and pop the stack
 
-							setTimeout( function () {
+								setTimeout( function () {
 
-								allCards[ openCards[0] ].classList.remove( 'open' )
-								allCards[ openCards[0] ].classList.remove( 'show' )
-								allCards[ openCards[0] ].classList.remove( 'match' )
-								allCards[ openCards[0] ].classList.remove( 'flip' )
+									allCards[ openCards[ 0 ] ].classList.remove( 'open' )
+									allCards[ openCards[ 0 ] ].classList.remove( 'show' )
+									allCards[ openCards[ 0 ] ].classList.remove( 'match' )
+									allCards[ openCards[ 0 ] ].classList.remove( 'flip' )
 
-								allCards[ openCards[1] ].classList.remove( 'open' )
-								allCards[ openCards[1] ].classList.remove( 'show' )
-								allCards[ openCards[1] ].classList.remove( 'match' )
-								allCards[ openCards[1] ].classList.remove( 'flip' )
+									allCards[ openCards[ 1 ] ].classList.remove( 'open' )
+									allCards[ openCards[ 1 ] ].classList.remove( 'show' )
+									allCards[ openCards[ 1 ] ].classList.remove( 'match' )
+									allCards[ openCards[ 1 ] ].classList.remove( 'flip' )
 
-								openCards = []
+									openCards = []
 
-							}, 1000 )  // timeout
-						}
-					} // if ( 2 === openCards.length )
+								}, 600 )  // timeout
+							}
+						} // if ( 2 === openCards.length )
+					}
 				}
 			} ) // allCards[ k ].addEventListener(
 		} // for
 
 
-		function getStars() {
-
-		}
-
 		/**
-		 *  @description
+		 *  @description Function used to update the number
+		 *               of moves in pairs, and to hide starts when
+		 *               falling below criteria 20 moves and 30 moves
 		 */
 		function updateMoves() {
 
-			switch( userStats.moves ) {
+			switch ( userStats.moves ) {
 				case 20:
-					userStats.starsCount--;
-					star1.classList.add('hidden-star');
-					break;
+					userStats.starsCount --
+					star1.classList.add( 'hidden-star' )
+					break
 
 				case 30:
-					userStats.starsCount--;
-					star2.classList.add('hidden-star');
-					break;
+					userStats.starsCount --
+					star2.classList.add( 'hidden-star' )
+					break
 			}
 
-			userStats.moves++;
-			document.getElementById( 'updateMoves' ).innerHTML = userStats.moves;
+			userStats.moves ++
+			document.getElementById( 'updateMoves' ).innerHTML = userStats.moves
 		}
 
 
 		/**
-		 *  @description
+		 *  @description Function used to refresh star count
 		 */
 		function refreshMoves() {
 
-			switch( userStats.moves ) {
+			switch ( userStats.moves ) {
 				case 20:
-					userStats.starsCount--;
-					star1.classList.add('hidden-star');
-					break;
+					userStats.starsCount --
+					star1.classList.add( 'hidden-star' )
+					break
 
 				case 30:
-					userStats.starsCount--;
-					star2.classList.add('hidden-star');
-					break;
+					userStats.starsCount --
+					star2.classList.add( 'hidden-star' )
+					break
 			}
 
-			document.getElementById( 'updateMoves' ).innerHTML = userStats.moves;
+			document.getElementById( 'updateMoves' ).innerHTML = userStats.moves
 		}
 
 
 		/**
-		 * @description
+		 * @description Update the score on the deck, and call refreshScore to
+		 *              keep it dry
 		 */
 		function updateScore() {
-			userStats.score += 100;
-			document.getElementById( 'updateScore' ).innerHTML = userStats.score;
+			userStats.score += 100
+			refreshScore()
 		}
 
 		/**
-		 * @description
+		 * @description Refresg the score
 		 */
 		function refreshScore() {
-			document.getElementById( 'updateScore' ).innerHTML = userStats.score;
+			document.getElementById( 'updateScore' ).innerHTML = userStats.score
 		}
 
 		/**
-		 * @description
+		 * @description  Time to reset the clock
 		 */
 		function stopTimer() {
 			clearInterval( timeinterval )
 		}
 
 		/**
-		 * @description
-		 * @param endtime
+		 * @description  Used to get the time remaining, I modified the original
+		 *               code so that it returns seconds to three places
+		 * @param   endtime
 		 * @returns {{total: number, seconds: number}}
 		 */
 		// https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/
@@ -275,7 +278,7 @@
 		}
 
 		/**
-		 * @description
+		 * @description function to init the clock.  I set it for 120 seconds
 		 * @param id
 		 * @param endtime
 		 */
@@ -309,7 +312,7 @@
 //======================================================================
 
 		/**
-		 * @description
+		 * @description  Reset everything for new game
 		 * @param deadline
 		 */
 		function restoreState( deadline ) {
@@ -323,41 +326,43 @@
 			//let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 )
 			stopTimer()
 			initializeClock( 'clockdiv', deadline )
-			userStats.moves       = 0
-			userStats.score       = 0
-			userStats.starsCount  = 3
-			userStats.stars       = 0
+			userStats.moves = 0
+			userStats.score = 0
+			userStats.starsCount = 3
+			userStats.stars = 0
 			refreshScore()
 			refreshMoves()
 		}
 
 		/**
-		 * @description
+		 * @description Open modal and give stats when user wins
 		 *
 		 */
 		function closeWonModal() {
-			userStats.timeUsed    = numberOfSeconds - getTimeRemaining(deadline).seconds
+			userStats.timeUsed = numberOfSeconds - getTimeRemaining( deadline ).seconds
 			wonClasses.remove( 'none' )
 			wonClasses.add( 'active' )
 			document.getElementById( 'won-game' ).style.display = 'none'
 			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
+
 		wonButton.addEventListener( 'click', closeWonModal, false )
 
 		/**
-		 * @description
+		 * @description open modal and give stats when user loses
 		 */
 		function closeLostModal() {
-			userStats.timeUsed    = numberOfSeconds - getTimeRemaining(deadline).seconds
+			userStats.timeUsed = numberOfSeconds - getTimeRemaining( deadline ).seconds
 			lostClasses.remove( 'none' )
 			lostClasses.add( 'active' )
 			document.getElementById( 'lost-game' ).style.display = 'none'
 			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
+
 		lostButton.addEventListener( 'click', closeLostModal, false )
 
 		/**
-		 * @description
+		 * @description  give user ifo from rubic
 		 */
 		function infoModal() {
 			infoClasses.remove( 'none' )
@@ -365,20 +370,22 @@
 			document.getElementById( 'info-game' ).style.display = 'none'
 			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
+
 		infoButton.addEventListener( 'click', infoModal, false )
 
 		/**
-		 * @description
+		 * @description  Button in info modal to go back to game
 		 */
 		function infoGame() {
 
 			infoClasses.remove( 'none' )
 			infoClasses.add( 'active2' )
 		}
+
 		infoIcon.addEventListener( 'click', infoGame, false )
 
 		/**
-		 * @description
+		 * @description event listener to start a new game
 		 */
 		function restartGame() {
 
@@ -391,6 +398,7 @@
 			}
 			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
+
 		restartIcon.addEventListener( 'click', restartGame, false )
 
 		/**
