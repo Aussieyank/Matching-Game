@@ -8,6 +8,10 @@
 			deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ),
 			stars = document.querySelectorAll('.stars i'),
 
+			starsOne   = document.getElementById( 'star1' ),
+			starsTwo   = document.getElementById( 'star2' ),
+			starsThree = document.getElementById( 'star3' ),
+
 			wonHTML = document.getElementById( 'wonHTML' ),
 			lostHTML = document.getElementById( 'lostHTML' ),
 
@@ -27,19 +31,21 @@
 		let userStats =  {
 			numberOfSeconds: 30,
 			seconds:          0,
-			numberStars:      3,
+			timeUsed:         0,
+			starsCount:       3,
 			moves:            0,
 			stars:            0,
 			score:            0
 		}
 
 		userStats.seconds     = getTimeRemaining(deadline).seconds
+		userStats.timeUsed    = numberOfSeconds - getTimeRemaining(deadline).seconds
 
-		//alert(JSON.stringify(userStats.moves, null, 4));
+		//alert(JSON.stringify(userStats.timeUsed, null, 4));
 		//alert(JSON.stringify(getTimeRemaining(deadline).seconds), null, 4);
 
-		wonHTML.innerHTML  = `<p class="modal__results">You did it in ${userStats.seconds} seconds and ${userStats.moves} moves.  You earned ${userStats.numberStars} stars and got ${userStats.score} points.</p>`;
-		lostHTML.innerHTML = `<p class="modal__results">You did it in ${userStats.seconds} seconds and ${userStats.moves} moves.  You earned ${userStats.numberStars} stars and got ${userStats.score} points.</p>`;
+		lostHTML.innerHTML = `<p class="modal__results">You did it in ${userStats.timeUsed} seconds and ${userStats.moves} moves.  You earned ${userStats.starsCount} stars and got ${userStats.score} points.</p>`;
+		wonHTML.innerHTML  = `<p class="modal__results">You did it in ${userStats.timeUsed} seconds and ${userStats.moves} moves.  You earned ${userStats.starsCount} stars and got ${userStats.score} points.</p>`;
 
 		let cards = [
 			'fa-diamond', 'fa-diamond',
@@ -187,12 +193,26 @@
 		}
 
 		/**
-		 * @description
+		 *  @description
 		 */
 		function updateMoves() {
-			++userStats.moves;
+
+			switch( userStats.moves ) {
+				case 20:
+					userStats.starsCount--;
+					star1.classList.add('hidden-star');
+					break;
+
+				case 30:
+					userStats.starsCount--;
+					star2.classList.add('hidden-star');
+					break;
+			}
+
+			userStats.moves++;
 			document.getElementById( 'updateMoves' ).innerHTML = userStats.moves;
 		}
+
 
 		/**
 		 * @description
@@ -288,8 +308,8 @@
 			//let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 )
 			stopTimer()
 			initializeClock( 'clockdiv', deadline )
-			//userStats.moves = 0
-			//userStats.score  = 0
+			userStats.moves = 0
+			userStats.score  = 0
 		}
 
 		/**
@@ -297,6 +317,7 @@
 		 *
 		 */
 		function closeWonModal() {
+			userStats.timeUsed    = numberOfSeconds - getTimeRemaining(deadline).seconds
 			wonClasses.remove( 'none' )
 			wonClasses.add( 'active' )
 			document.getElementById( 'won-game' ).style.display = 'none'
@@ -308,6 +329,7 @@
 		 * @description
 		 */
 		function closeLostModal() {
+			userStats.timeUsed    = numberOfSeconds - getTimeRemaining(deadline).seconds
 			lostClasses.remove( 'none' )
 			lostClasses.add( 'active' )
 			document.getElementById( 'lost-game' ).style.display = 'none'
