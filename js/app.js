@@ -215,10 +215,38 @@
 
 
 		/**
+		 *  @description
+		 */
+		function refreshMoves() {
+
+			switch( userStats.moves ) {
+				case 20:
+					userStats.starsCount--;
+					star1.classList.add('hidden-star');
+					break;
+
+				case 30:
+					userStats.starsCount--;
+					star2.classList.add('hidden-star');
+					break;
+			}
+
+			document.getElementById( 'updateMoves' ).innerHTML = userStats.moves;
+		}
+
+
+		/**
 		 * @description
 		 */
 		function updateScore() {
 			userStats.score += 100;
+			document.getElementById( 'updateScore' ).innerHTML = userStats.score;
+		}
+
+		/**
+		 * @description
+		 */
+		function refreshScore() {
 			document.getElementById( 'updateScore' ).innerHTML = userStats.score;
 		}
 
@@ -280,19 +308,6 @@
 
 //======================================================================
 
-		function restoreState() {
-			let cardz = buildCards()
-			for ( let k = 0; k < 16; k++ ) {
-				cardz[ k ].classList.remove( 'open' )
-				cardz[ k ].classList.remove( 'show' )
-				cardz[ k ].classList.remove( 'mismatch' )
-				cardz[ k ].classList.remove( 'match' )
-				cardz[ k ].classList.add( 'flip' )
-			}
-			let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * 40 * 1000 )
-			initializeClock( 'clockdiv', deadline )
-		}
-
 		/**
 		 * @description
 		 * @param deadline
@@ -308,8 +323,12 @@
 			//let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 )
 			stopTimer()
 			initializeClock( 'clockdiv', deadline )
-			userStats.moves = 0
-			userStats.score  = 0
+			userStats.moves       = 0
+			userStats.score       = 0
+			userStats.starsCount  = 3
+			userStats.stars       = 0
+			refreshScore()
+			refreshMoves()
 		}
 
 		/**
