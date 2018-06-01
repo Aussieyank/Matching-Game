@@ -299,10 +299,22 @@
 					wonClasses.remove( 'none' )
 					wonClasses.add( 'active' )
 
+					refreshMoves()
+					refreshScore()
+					userStats.seconds = getTimeRemaining( deadline ).seconds
+					userStats.timeUsed = numberOfSeconds - getTimeRemaining( deadline ).seconds
+					wonHTML.innerHTML = `<p class="modal__results">You did it in ${userStats.timeUsed} seconds and ${userStats.moves} moves.  You earned ${userStats.starsCount} stars and got ${userStats.score} points.</p>`
+
 				} else if ( t.total <= 0 ) {
 					clearInterval( timeinterval )
 					lostClasses.remove( 'none' )
 					lostClasses.add( 'active' )
+
+					refreshMoves()
+					refreshScore()
+					userStats.seconds = getTimeRemaining( deadline ).seconds
+					userStats.timeUsed = numberOfSeconds - getTimeRemaining( deadline ).seconds
+					lostHTML.innerHTML = `<p class="modal__results">You did it in ${userStats.timeUsed} seconds and ${userStats.moves} moves.  You earned ${userStats.starsCount} stars and got ${userStats.score} points.</p>`
 				}
 			}
 
@@ -340,7 +352,6 @@
 		 *
 		 */
 		function closeWonModal() {
-			userStats.timeUsed = numberOfSeconds - getTimeRemaining( deadline ).seconds
 			wonClasses.remove( 'none' )
 			wonClasses.add( 'active' )
 			document.getElementById( 'won-game' ).style.display = 'none'
@@ -353,7 +364,7 @@
 		 * @description open modal and give stats when user loses
 		 */
 		function closeLostModal() {
-			userStats.timeUsed = numberOfSeconds - getTimeRemaining( deadline ).seconds
+
 			lostClasses.remove( 'none' )
 			lostClasses.add( 'active' )
 			document.getElementById( 'lost-game' ).style.display = 'none'
@@ -393,6 +404,7 @@
 			if ( document.querySelectorAll( '.match' ).length === 16 ) {
 				wonClasses.remove( 'none' )
 				wonClasses.remove( 'active' )
+
 			} else {
 				lostClasses.remove( 'none' )
 				lostClasses.remove( 'active' )
