@@ -168,6 +168,10 @@ h2 {
    padding:    0;
 }
 
+.hidden-star {
+   display: none;
+}
+
 section.footer__panel {
    display:         inline-grid;
    width:           100%;
