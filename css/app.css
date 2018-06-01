@@ -182,7 +182,7 @@ footer.footer__panel {
    justify-content:       center;
 }
 
-.instructions,
+/*.instructions,*/
 .stars,
 .restart {
    justify-self: center;
@@ -198,7 +198,6 @@ footer.footer__panel {
 }
 
 #overlay {
-   /*//background: rgba( 0, 0, 0, .8 );*/
    height: 100%;
    width: 100%;
    position: absolute;
@@ -217,7 +216,6 @@ footer.footer__panel {
    top: 10px;
    right: 10px;
    position: absolute;
-   /*//background: rgba( 255, 255, 255, .1);*/
 }
 
 #overlay a.lost-game.close {
@@ -230,7 +228,6 @@ footer.footer__panel {
    top: 10px;
    right: 10px;
    position: absolute;
-   /*//background: rgba( 255, 255, 255, .1);*/
 }
 
 #overlay a.won-game.close {
@@ -310,12 +307,6 @@ footer.footer__panel {
    line-height:      50px;
    text-align:       center;
 }
-
-/*.modal .active {*/
-   /*display: block;*/
-/*}*/
-
-
 
 @-webkit-keyframes flame-flicker {
    /* flame pulses */
@@ -446,24 +437,7 @@ footer.footer__panel {
    /*right: 0;*/
    /*bottom: 0;*/
 /*}*/
-.modal__info-game {
-   display: none;
-   background-color: #fff;
 
-   text-align: center;
-   width: 100%;
-   height: 100%;
-   margin: 0 auto;
-   padding: 10px;
-
-   font-size: 20px;
-
-   position: fixed;
-   top: 0;
-   left: 0;
-   right: 0;
-   bottom: 0;
-}
 
 
 .modal__lost-game {
@@ -515,6 +489,35 @@ footer.footer__panel {
    -webkit-box-pack: center;
    justify-content: center;
 
+   animation: 1s fadeIn;
+}
+
+.modal__info-game {
+   display: none;
+   background-color: #fff;
+
+   text-align: left;
+   width: 80%;
+   /*height: 100%;*/
+   margin: 0 auto;
+   padding: 10px;
+
+   font-size: 20px;
+
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+}
+
+.modal.active2 {
+   max-width: 80%;
+   display: flex;
+   -webkit-box-orient: vertical;
+   -webkit-box-direction: normal;
+   flex-direction: column;
+   overflow-y: auto;
    animation: 1s fadeIn;
 }
 

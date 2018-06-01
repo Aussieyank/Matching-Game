@@ -4,10 +4,12 @@
 	function ( document ) {
 		'use strict'
 
-		let body = document.querySelector( 'body' ),
-
-			numberOfSeconds = 180,
+		let numberOfSeconds = 30,
 			deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ),
+			stars = document.querySelectorAll('.stars i'),
+
+			wonHTML = document.getElementById( 'wonHTML' ),
+			lostHTML = document.getElementById( 'lostHTML' ),
 
 			wonClasses = document.getElementById( 'won-game' ).classList,
 			lostClasses = document.getElementById( 'lost-game' ).classList,
@@ -20,13 +22,24 @@
 			infoIcon = document.getElementById( 'info-icon' ),
 			restartIcon = document.getElementById( 'restart-icon' ),
 
-			isMatch = {},
-			userStats = {},
 			timeinterval
 
-		userStats.numberMoves = 0
-		userStats.scoreCount  = 0
+		let userStats =  {
+			numberOfSeconds: 30,
+			seconds:          0,
+			numberStars:      3,
+			moves:            0,
+			stars:            0,
+			score:            0
+		}
 
+		userStats.seconds     = getTimeRemaining(deadline).seconds
+
+		//alert(JSON.stringify(userStats.moves, null, 4));
+		//alert(JSON.stringify(getTimeRemaining(deadline).seconds), null, 4);
+
+		wonHTML.innerHTML  = `<p class="modal__results">You did it in ${userStats.seconds} seconds and ${userStats.moves} moves.  You earned ${userStats.numberStars} stars and got ${userStats.score} points.</p>`;
+		lostHTML.innerHTML = `<p class="modal__results">You did it in ${userStats.seconds} seconds and ${userStats.moves} moves.  You earned ${userStats.numberStars} stars and got ${userStats.score} points.</p>`;
 
 		let cards = [
 			'fa-diamond', 'fa-diamond',
@@ -58,7 +71,7 @@
          	</li>`
 		}
 
-		let starsRules = [
+		let starRules = [
 			// 1 star minimum
 			{
 				minMoves: 21,
@@ -76,12 +89,17 @@
 			},
 		]
 
+		let star =  {
+				active: 'fa-star',
+				inactive: 'fa-star-o'
+			}
+
 
 		/** ************************************************************************
 		 *  Start the game
 		 ** ***********************************************************************/
 
-		function gameInit() {
+		function init() {
 			// set as a global var as it is called in numerous places
 			initializeClock( 'clockdiv', deadline )
 			//registerEventListeners()
@@ -94,7 +112,7 @@
 			//console.log( cardHTML )
 		}
 
-		gameInit()
+		init()
 
 		/**
 		 * Display the cards on the page
@@ -102,25 +120,6 @@
 		 *   - loop through each card and create its HTML
 		 *   - add each card's HTML to the page
 		 */
-
-		/**
-		 * @description  Shuffle function from http://stackoverflow.com/a/2450976
-		 * @param array
-		 * @returns {*}
-		 */
-		function shuffle( array ) {
-			let currentIndex = array.length, temporaryValue, randomIndex
-
-			while ( currentIndex !== 0 ) {
-				randomIndex = Math.floor( Math.random() * currentIndex )
-				currentIndex -= 1
-				temporaryValue = array[ currentIndex ]
-				array[ currentIndex ] = array[ randomIndex ]
-				array[ randomIndex ] = temporaryValue
-			}
-
-			return array
-		}
 
 		/**
 		 * set up the event listener for a card. If a card is clicked: TODO registerEventListeners
@@ -136,7 +135,7 @@
 
 		let allCards = document.querySelectorAll( '.card' )
 		let openCards = []
-		for (let k = 0; k < allCards.length; k++) {
+		for ( let k = 0; k < allCards.length; k++ ) {
 
 			// use k as an index via the allCards stack
 			allCards[ k ].addEventListener( 'click', function ( e ) {
@@ -152,10 +151,12 @@
 					allCards[ k ].classList.add( 'open' )
 					allCards[ k ].classList.add( 'show' )
 
-					updateMoves()
 
 					// check for a match
 					if ( 2 === openCards.length ) {
+
+						// moves come in a pair
+						updateMoves()
 
 						let firstCard  = allCards[openCards[0]].children[0].getAttribute( 'data-class')
 						let secondCard = allCards[openCards[1]].children[0].getAttribute( 'data-class')
@@ -208,6 +209,23 @@
 
 		}
 
+		function numberStars( numberStars ) {
+			userStats.stars.forEach((star, index) => {
+				let toReplace = 'inactive';
+				let replaceWith = 'active';
+
+				if ((index + 1) > numberStars) {
+					toReplace = 'active';
+					replaceWith = 'inactive';
+				}
+
+				if (!star.classList.contains(this._config.stars[replaceWith])) {
+					star.classList.remove(    this._config.stars[toReplace]);
+					star.classList.add(       this._config.stars[replaceWith]);
+				}
+			});
+		};
+
 		/**
 		 * @description
 		 * @param time
@@ -223,19 +241,17 @@
 		 * @description
 		 */
 		function updateMoves() {
-			++ userStats.numberMoves
-			document.getElementById( 'updateMoves' ).innerHTML = userStats.numberMoves
+			++userStats.moves;
+			document.getElementById( 'updateMoves' ).innerHTML = userStats.moves;
 		}
-
 
 		/**
 		 * @description
 		 */
 		function updateScore() {
-			userStats.scoreCount += 100
-			document.getElementById( 'updateScore' ).innerHTML = userStats.scoreCount
+			userStats.score += 100;
+			document.getElementById( 'updateScore' ).innerHTML = userStats.score;
 		}
-
 
 		/**
 		 * @description
@@ -310,8 +326,8 @@
 			//let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 )
 			stopTimer()
 			initializeClock( 'clockdiv', deadline )
-			userStats.numberMoves = 0
-			userStats.scoreCount  = 0
+			//userStats.moves = 0
+			//userStats.score  = 0
 		}
 
 		/**
@@ -342,7 +358,7 @@
 		 */
 		function infoModal() {
 			infoClasses.remove( 'none' )
-			infoClasses.add( 'active' )
+			infoClasses.add( 'active2' )
 			document.getElementById( 'info-game' ).style.display = 'none'
 			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
@@ -354,7 +370,7 @@
 		function infoGame() {
 
 			infoClasses.remove( 'none' )
-			infoClasses.add( 'active' )
+			infoClasses.add( 'active2' )
 		}
 		infoIcon.addEventListener( 'click', infoGame, false )
 
@@ -373,6 +389,25 @@
 			restoreState( new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ) )
 		}
 		restartIcon.addEventListener( 'click', restartGame, false )
+
+		/**
+		 * @description  Shuffle function from http://stackoverflow.com/a/2450976
+		 * @param array
+		 * @returns {*}
+		 */
+		function shuffle( array ) {
+			let currentIndex = array.length, temporaryValue, randomIndex
+
+			while ( currentIndex !== 0 ) {
+				randomIndex = Math.floor( Math.random() * currentIndex )
+				currentIndex -= 1
+				temporaryValue = array[ currentIndex ]
+				array[ currentIndex ] = array[ randomIndex ]
+				array[ randomIndex ] = temporaryValue
+			}
+
+			return array
+		}
 
 	}( document )
 )
