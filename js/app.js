@@ -7,8 +7,8 @@
 			deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 ),
 			stars = document.querySelectorAll( '.stars i' ),
 
-			starsOne = document.getElementById( 'star1' ),
-			starsTwo = document.getElementById( 'star2' ),
+			starsOne   = document.getElementById( 'star1' ),
+			starsTwo   = document.getElementById( 'star2' ),
 			starsThree = document.getElementById( 'star3' ),
 
 			wonHTML = document.getElementById( 'wonHTML' ),
@@ -82,7 +82,6 @@
 		 ** ***********************************************************************/
 
 		function init() {
-			// set as a global var as it is called in numerous places
 			initializeClock( 'clockdiv', deadline )
 			//registerEventListeners()
 			let deck = document.querySelector( '.deck' )
@@ -91,7 +90,6 @@
 			} )
 
 			deck.innerHTML = cardHTML.join( '' )
-			//console.log( cardHTML )
 		}
 
 		init()
@@ -114,11 +112,13 @@
 		 *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one) TODO callModal();
 		 */
 
-
 		let allCards = document.querySelectorAll( '.card' )
 		let openCards = []
 
-
+		/**
+		 * The overall logic came from Mike's youtube presentation, althoght it didn't work
+		 * for me the way he left it so a lot of it has changed.*
+		 */
 		// use k as an index via the allCards stack
 		for ( let k = 0; k < allCards.length; k ++ ) {
 
@@ -191,7 +191,6 @@
 			} ) // allCards[ k ].addEventListener(
 		} // for
 
-
 		/**
 		 *  @description Function used to update the number
 		 *               of moves in pairs, and to hide starts when
@@ -215,7 +214,6 @@
 			document.getElementById( 'updateMoves' ).innerHTML = userStats.moves
 		}
 
-
 		/**
 		 *  @description Function used to refresh star count
 		 */
@@ -235,7 +233,6 @@
 
 			document.getElementById( 'updateMoves' ).innerHTML = userStats.moves
 		}
-
 
 		/**
 		 * @description Update the score on the deck, and call refreshScore to
@@ -283,6 +280,7 @@
 		 * @param id
 		 * @param endtime
 		 */
+		// https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/
 		function initializeClock( id, endtime ) {
 			let clock = document.getElementById( id )
 			let secondsSpan = clock.querySelector( '.seconds' )
@@ -322,39 +320,12 @@
 			timeinterval = setInterval( updateClock, 1000 )
 		}
 
-//======================================================================
-
-		/**
-		 * @description  Reset everything for new game
-		 * @param deadline
-		 */
-		function restoreState( deadline ) {
-			for ( let k = 0; k < 16; k ++ ) {
-				allCards[ k ].classList.remove( 'open' )
-				allCards[ k ].classList.remove( 'show' )
-				allCards[ k ].classList.remove( 'mismatch' )
-				allCards[ k ].classList.remove( 'match' )
-				allCards[ k ].classList.remove( 'flip' )
-			}
-			//let deadline = new Date( Date.parse( new Date() ) + 1 * 1 * 1 * numberOfSeconds * 1000 )
-			stopTimer()
-			initializeClock( 'clockdiv', deadline )
-			userStats.moves = 0
-			userStats.score = 0
-			userStats.starsCount = 3
-			userStats.stars = 0
-			refreshScore()
-			refreshMoves()
-		}
-
 		/**
 		 * @description Open modal and give stats when user wins
-		 *
 		 */
 		function closeWonModal() {
 			location.reload();
 		}
-
 		wonButton.addEventListener( 'click', closeWonModal, false )
 
 		/**
@@ -363,35 +334,24 @@
 		function closeLostModal() {
 			location.reload();
 		}
-
 		lostButton.addEventListener( 'click', closeLostModal, false )
 
 		/**
-		 * @description  give user ifo from rubic
+		 * @description  give user info from rubic
 		 */
 		function infoModal() {
 			location.reload();
 		}
-
 		infoButton.addEventListener( 'click', infoModal, false )
 
 		/**
 		 * @description  Button in info modal to go back to game
 		 */
 		function infoGame() {
-
 			infoClasses.remove( 'none' )
 			infoClasses.add( 'active2' )
 		}
-
 		infoIcon.addEventListener( 'click', infoGame, false )
-
-		/**
-		 * @description event listener to start a new game
-		 */
-		function restartGame() {
-			location.reload();
-		}
 
 		restartIcon.addEventListener( 'click', restartGame, false )
 
