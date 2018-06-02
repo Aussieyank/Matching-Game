@@ -353,6 +353,13 @@
 		}
 		infoIcon.addEventListener( 'click', infoGame, false )
 
+
+		/**
+		 * @description event listener to start a new game
+		 */
+		function restartGame() {
+			location.reload();
+		}
 		restartIcon.addEventListener( 'click', restartGame, false )
 
 		/**
